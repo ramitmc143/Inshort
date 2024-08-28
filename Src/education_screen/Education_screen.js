@@ -20,7 +20,7 @@ import {
   
     const fetchNotificationData = async () => {
         try {
-          const response = await fetch('http://172.17.15.218/hello/Welcome/get_eduinfo_lang_wise?lang_id=2');
+          const response = await fetch('https://jsonplaceholder.typicode.com/posts');
           
           if (!response.ok) {
             throw new Error(`Network response was not ok: ${response.statusText}`);
@@ -33,7 +33,8 @@ import {
           }
           
           const jsonData = await response.json();
-          setNotificationData(jsonData.data);
+          setNotificationData(jsonData);
+          console.log('jsonData:-',jsonData)
         } catch (error) {
           console.error('Error fetching data:', error.message);
           // You can show an error message to the user here or handle it as needed
@@ -67,20 +68,20 @@ import {
       <View style={styles.cardContainer}>
         <TouchableOpacity style={styles.card}>
           <Image source={{uri: image_url}} style={styles.images} />
-          <View>
+          <View style={{width:'50%',height:'90%'}}>
             <Text
               style={{
                 textAlign: 'center',
                 width: 200,
                 marginLeft: '6%',
-                marginTop: '2%',
+                marginTop: '20%',
                 fontWeight: 'bold',
               }}>
-              {stripHtmlTags(item.art_title)}
+              {stripHtmlTags(item.title)}
             </Text>
-            <Text style={{textAlign: 'center', width: 200, paddingBottom: 20}}>
-              {item.art_title_english}
-            </Text>
+            {/* <Text style={{textAlign: 'center', width: 200, paddingBottom: 20}}>
+              {item.body}
+            </Text> */}
           </View>
         </TouchableOpacity>
       </View>
@@ -132,7 +133,7 @@ import {
             ) : (
               <FlatList
                 data={NotificationData} // Show only the items up to itemsToShow
-                keyExtractor={item => item.art_id.toString()}
+                keyExtractor={item => item.id.toString()}
                 renderItem={renderItem}
                 contentContainerStyle={styles.flatListContent}
               />

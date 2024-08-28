@@ -24,6 +24,10 @@ export const model_paper_in_telugu = 'మోడల్ పేపర్';
 export const more_in_english = 'More';
 export const more_in_telugu = 'మరింత';
 
+export const current_affairs_in_english = 'Current affairs';
+export const current_affairs_in_telugu = 'ప్రస్తుత వ్యవహారాలు'
+
+
 
 // export const More_Options
 // export const 

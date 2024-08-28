@@ -32,12 +32,13 @@ const Notification = () => {
     //   });
 
     try {
-      const response = await fetch('http://172.17.15.218/hello/');
+      const response = await fetch('https://jsonplaceholder.typicode.com/posts');
       if (!response.ok) {
         console.log('Network response was not ok' + response.statusText);
       }
       const jsonData = await response.json();
-      setNotificationData(jsonData.data);
+      setNotificationData(jsonData);
+      console.log('jsonData:-',jsonData)
     } catch (error) {
       console.log('Error fetching data:',error)
     } finally {
@@ -49,9 +50,9 @@ const Notification = () => {
     fetchNotificationData();
   }, []);
 
-  const stripHtmlTags = str => {
-    return str.replace(/<[^>]*>?/gm, '');
-  };
+  // const stripHtmlTags = str => {
+  //   return str.replace(/<[^>]*>?/gm, '');
+  // };
 
   const loadMoreItems = () => {
     setItemsToShow(prevItemsToShow => prevItemsToShow + 3);
@@ -62,20 +63,21 @@ const Notification = () => {
     <View style={styles.cardContainer}>
       <TouchableOpacity style={styles.card}>
         <Image source={{uri: image_url}} style={styles.images} />
-        <View>
+        <View style={{width:'50%',height:'90%'}}>
           <Text
             style={{
               textAlign: 'center',
-              width: 200,
+              width: '130%',
               marginLeft: '6%',
-              marginTop: '2%',
+              marginTop: '20%',
               fontWeight: 'bold',
             }}>
-            {stripHtmlTags(item.lt_notif_title_telugu)}
+            {/* {stripHtmlTags(item.lt_notif_title_telugu)} */}
+            {item.title}
           </Text>
-          <Text style={{textAlign: 'center', width: 200, paddingBottom: 20}}>
-            {item.lt_notif_title_english}
-          </Text>
+          {/* <Text style={{textAlign: 'center', width: '130%', paddingBottom: 20,}}>
+            {item.body}
+          </Text> */}
         </View>
       </TouchableOpacity>
     </View>
@@ -127,7 +129,7 @@ const Notification = () => {
           ) : (
             <FlatList
               data={NotificationData} // Show only the items up to itemsToShow
-              keyExtractor={item => item.lt_notif_id.toString()}
+              keyExtractor={item => item.id.toString()}
               renderItem={renderItem}
               contentContainerStyle={styles.flatListContent}
             />
@@ -147,20 +149,25 @@ export default Notification;
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    height: '100%',
+    // width: '100%',
+    // height: '100%',
+    flex:1,
     backgroundColor: '#686D76',
+    // backgroundColor: 'red',
     justifyContent: 'flex-end',
   },
   flatListContent: {
     paddingBottom: 100,
   },
   cardContainer: {
+    // flex:1,
+    // height:'100%',
     justifyContent: 'center',
+  
   },
   card: {
     width: '80%',
-    height: 115,
+    height:115,
     alignSelf: 'center',
     margin: '2%',
     flexDirection: 'row',
