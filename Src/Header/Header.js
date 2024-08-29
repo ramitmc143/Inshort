@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Animated,
   Easing,
-  Switch,
+  TouchableWithoutFeedback, // Import this to detect touches outside the drawer
 } from 'react-native';
 import Iconss from 'react-native-vector-icons/Entypo';
 import {useDispatch, useSelector} from 'react-redux';
@@ -19,12 +19,16 @@ import {
 
 import {changeLanguage} from '../redux/languageSlice/LanguageSlice';
 import Drawer_navigation from '../drawer_navigation/Drawer_navigation';
+import {Switch} from 'react-native-switch';
 
-const Header = ({onSelectedLanguage, selectedLanguage}) => {
+const Header = ({
+  onSelectedLanguage,
+  selectedLanguage,
+  onHandleDrawer_navigation,
+}) => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [selectedValue, setSelectedValue] = useState('');
-  const [isOn, setIsOn] = useState(false);
 
   const drawerAnimation = useRef(new Animated.Value(300)).current; // Adjust 300 based on drawer width
 
@@ -48,13 +52,25 @@ const Header = ({onSelectedLanguage, selectedLanguage}) => {
   };
 
   const toggleDrawer = () => {
-    setDrawerVisible(!drawerVisible);
-    Animated.timing(drawerAnimation, {
-      toValue: drawerVisible ? 300 : 0, // Animate drawer in and out
-      duration: 300,
-      easing: Easing.inOut(Easing.ease),
-      useNativeDriver: true,
-    }).start();
+    if (drawerVisible) {
+      // Closing drawer
+      Animated.timing(drawerAnimation, {
+        toValue: 300, // Animate drawer out
+        duration: 300,
+        easing: Easing.inOut(Easing.ease),
+        useNativeDriver: true,
+      }).start(() => setDrawerVisible(false));
+    } else {
+      // Opening drawer
+      setDrawerVisible(true);
+      Animated.timing(drawerAnimation, {
+        toValue: 0, // Animate drawer in
+        duration: 300,
+        easing: Easing.inOut(Easing.ease),
+        useNativeDriver: true,
+      }).start();
+    }
+    onHandleDrawer_navigation();
   };
 
   const handleClick = value => {
@@ -63,100 +79,102 @@ const Header = ({onSelectedLanguage, selectedLanguage}) => {
     toggleDrawer(); // Close the drawer with animation
   };
 
+  const handleOutsidePress = () => {
+    if (drawerVisible) {
+      toggleDrawer(); // Close the drawer if it's open and the user taps outside
+    }
+  };
+
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
-  return (
-    <View
-      style={[
-        styles.container,
-        {backgroundColor: THEME.data == 'light' ? '#ffffff' : DARK_BG_COLOR},
-      ]}>
-      <View style={styles.item}>
-        <TouchableOpacity style={styles.discover}>
-          <Text
-            style={[
-              styles.text,
-              {
-                width: 80,
-                marginBottom: 5,
-                letterSpacing: 1,
-                alignItems: 'center',
-                left: '60',
-                textAlign: 'center',
-              },
-              selectedLanguage === 'letest_news' && styles.selectedText,
-              text_color,
-            ]}>
-            {selectedValue
-              ? capitalizeFirstLetter(selectedValue)
-              : capitalizeFirstLetter(selectedLanguage)}
-          </Text>
-        </TouchableOpacity>
-      </View>
+  const handleDrawerClose = () => {
+    setDrawerVisible(false);
+  };
 
-      <View style={[styles.item, styles.centerItem, {left: '145%', top: '1%'}]}>
-        <View style={{flexDirection: 'row'}}>
-          {/* <Text
-            style={[
-              styles.text,
-              {
-                color:
-                  THEME.data === 'light' ? LIGHT_TEXT_COLOR : DARK_TEXT_COLOR,
-              },
-             {
-              // marginLeft:'-2%'
-              paddingLeft:'2%'
-             }
-            ]}>
-            Language
-          </Text> */}
+  return (
+    <TouchableWithoutFeedback onPress={handleOutsidePress}>
+      <View
+        style={[
+          styles.container,
+          {backgroundColor: THEME.data == 'light' ? '#ffffff' : DARK_BG_COLOR},
+        ]}>
+        <View style={styles.item}>
+          <TouchableOpacity style={styles.discover}>
+            <Text
+              style={[
+                styles.text,
+                {
+                  width: 80,
+                  marginBottom: 5,
+                  letterSpacing: 1,
+                  alignItems: 'center',
+                  left: '200%',
+                  textAlign: 'center',
+                },
+                selectedLanguage === 'letest_news' && styles.selectedText,
+                text_color,
+              ]}>
+              {selectedValue
+                ? capitalizeFirstLetter(selectedValue)
+                : capitalizeFirstLetter(selectedLanguage)}
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <View
+          style={[styles.item, styles.centerItem, {left: '145%', top: '1%'}]}>
+
           <Switch
-            value={selectedLanguage === 'english'} // Check if the current language is English
+            value={selectedLanguage === 'telugu'}
             onValueChange={() =>
               handleLanguageChange(
                 selectedLanguage === 'english' ? 'telugu' : 'english',
               )
-            } // Toggle language between English and Telugu
-            thumbColor={selectedLanguage === 'english' ? 'green' : '#0A90F6'} // Thumb color based on language
-            trackColor={{false: '#0A90F6', true: 'green'}} // Track color based on language
-            style={styles.switch} // Adjust the size of the switch if needed
+            }
+            disabled={false}
+            activeText={'TL'}
+            inActiveText={'ENG'}
+            backgroundActive={'#125B9A'}
+            backgroundInactive={'gray'}
+            circleActiveColor={'#1E2A5E'}
+            circleInActiveColor={'#000000'}
+            innerCircleStyle={{alignItems: 'center', justifyContent: 'center'}}
+            outerCircleStyle={{}}
+            switchLeftPx={10}
+            switchRightPx={10}
+            switchWidthMultiplier={2}
+            switchBorderRadius={50}
           />
         </View>
 
-        {/* {dropdownVisible && (
-          <View style={styles.dropdown}>
-            <TouchableOpacity
-              style={styles.dropdownItem}
-              onPress={() => handleLanguageChange('telugu')}>
-              <Text style={text_color}>Telugu</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.dropdownItem}
-              onPress={() => handleLanguageChange('english')}>
-              <Text style={text_color}>English</Text>
-            </TouchableOpacity>
-          </View>
-        )} */}
-      </View>
+        <View>
+          <TouchableOpacity style={styles.settingIcon} onPress={toggleDrawer}>
+            <Iconss
+              name="menu"
+              size={30}
+              // color="#0A90F6"
+            />
+          </TouchableOpacity>
+        </View>
 
-      <View>
-        <TouchableOpacity style={styles.settingIcon} onPress={toggleDrawer}>
-          <Iconss name="menu" size={30} color="#0A90F6" />
-        </TouchableOpacity>
+        {drawerVisible && (
+          <Animated.View
+            style={[
+              styles.drawerContainer,
+              {
+                transform: [{translateX: drawerAnimation}],
+              },
+            ]}>
+            <Drawer_navigation
+              onHandleClick={handleClick}
+              onCloseDrawer={handleDrawerClose}
+            />
+          </Animated.View>
+        )}
       </View>
-
-      <Animated.View
-        style={[
-          styles.drawerContainer,
-          {
-            transform: [{translateX: drawerAnimation}],
-          },
-        ]}>
-        <Drawer_navigation onHandleClick={handleClick} />
-      </Animated.View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -169,7 +187,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderBottomColor: 'red',
     elevation: 5,
-    height: 80,
+    height: 54,
   },
   item: {
     flex: 1,
@@ -181,7 +199,7 @@ const styles = StyleSheet.create({
   text: {
     marginLeft: 5,
     fontWeight: 'bold',
-    fontSize: 12,
+    fontSize: 14,
   },
   selectedText: {
     borderBottomWidth: 2,
@@ -192,48 +210,37 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '54%',
     height: 25,
-    // borderWidth: 1,
     borderColor: 'lightgrey',
     borderRadius: 5,
     justifyContent: 'center',
     left: '210%',
   },
-  MyFeed: {
-    width: 85,
+  customSwitch: {
+    width: 80,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 15,
   },
-  dropdown: {
-    position: 'absolute',
-    top: 30,
-    left: 12,
-    backgroundColor: '#ffffff',
-    borderColor: 'lightgray',
-    borderWidth: 1,
-    borderRadius: 5,
-    zIndex: 1000,
-    elevation: 5,
-  },
-  dropdownItem: {
-    padding: 10,
-    borderBottomColor: 'lightgray',
-    borderBottomWidth: 1,
+  switchText: {
+    color: '#ffffff',
+    fontWeight: 'bold',
   },
   settingIcon: {
-    // padding: 10,
+    zIndex: 10,
+    position: 'absolute',
+    right: 20,
+    top: '-145%',
   },
   drawerContainer: {
     position: 'absolute',
-    top: '-15%',
+    top: '-255%',
     right: 0,
-    width: '75%', // Adjust the width as per your requirement
-    height: '0%', // Full height of the screen
-    backgroundColor: '#ffffff', // or DARK_BG_COLOR depending on theme
+    width: '75%',
+    height: '0%',
+    backgroundColor: '#ffffff',
     zIndex: 1001,
     elevation: 10,
-  },
-  switch: {
-    transform: [{scaleX: 1.3}, {scaleY: 1.3}], // Adjust the size of the switch if needed
-    left: '90%',
-    bottom: '2%',
   },
 });
 

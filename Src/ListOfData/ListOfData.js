@@ -10,6 +10,8 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Animated,
+  // Dimensions,
+  // Platform
 } from 'react-native';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
@@ -28,7 +30,10 @@ import {
   DARK_TEXT_COLOR,
 } from '../redux/utils/Colors';
 
-const ListOfData = ({navigation}) => {
+const {height: SCREEN_HEIGHT} = Dimensions.get('window');
+const screenWidth = Dimensions.get('window').width;
+
+const ListOfData = ({navigation , onCloseDrawer}) => {
   // State management using hooks
   const [showHeaderFooter, setShowHeaderFooter] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('telugu');
@@ -42,6 +47,7 @@ const ListOfData = ({navigation}) => {
   const [valueOfMoreModelOfFooter, setValueOfMoreModelOfFooter] =
     useState(true);
   const [isMoreModalVisible, setIsMoreModalVisible] = useState(false); // New state for modal visibility
+  const [drawer_navigation , setDrawer_navigation] = useState(false)
   const windowHeight = Dimensions.get('window').height;
 
   // const { theme } = useTheme();
@@ -229,7 +235,9 @@ const ListOfData = ({navigation}) => {
   );
 
   const handleContentPress = useCallback(() => {
-    // console.log('Content pressed');
+    if (onCloseDrawer) {
+      onCloseDrawer(); // Call function to close the drawer
+    }
     setShowHeaderFooter(prev => !prev);
 
     if (timeoutRef.current) {
@@ -240,7 +248,7 @@ const ListOfData = ({navigation}) => {
     //   setShowHeaderFooter(false);
     // }, 3000);
     return () => clearTimeout(timeoutRef.current);
-  }, [showHeaderFooter]);
+  }, [showHeaderFooter,navigation]);
 
   const handleReadMorePress = useCallback(() => {
     // setReadMoreClick(!readMoreClick);
@@ -324,10 +332,10 @@ const ListOfData = ({navigation}) => {
                     <View
                       style={{
                         backgroundColor: 'white',
-                        width: '90%',
+                        width: screenWidth * 0.95, // 90% of the screen width
                         height: windowHeight * 0.8,
                         alignSelf: 'center',
-                        top: '-5%',
+                        top: '-7.5%',
                       }}>
                       {/* ------------------------------title----------------------------------------------- */}
                       <View>
@@ -384,7 +392,7 @@ const ListOfData = ({navigation}) => {
                           bottom: '4%',
                           left: '2.5%',
                           borderWidth: 1,
-                          width: '30%',
+                          width: screenWidth * 0.3, // 90% of the screen width
                           borderRadius: 5,
                         }}>
                         {/* -------------------------date container --------------------------- */}
@@ -446,7 +454,7 @@ const ListOfData = ({navigation}) => {
                             style={{
                               flexDirection: 'row',
                               padding: '2%',
-                              left: '3%',
+                              left: '1%',
                               borderWidth: 1,
                               width: Dimensions.get('window').width * 0.25,
                               borderRadius: 5,
@@ -470,13 +478,13 @@ const ListOfData = ({navigation}) => {
                   style={[
                     styles.cardContainer,
                     {
-                      zIndex: 0,
-                      position: readMoreClick ? 'relative' : 'absolute',
+                      zIndex: 1,
+                      position: 'absolute',
                       transform: [{translateY: nextSwipeAnimation}],
                     },
                     {
                       backgroundColor:
-                        THEME.data == 'light' ? LIGHT_BG_COLOR : DARK_BG_COLOR,
+                        THEME.data === 'light' ? LIGHT_BG_COLOR : DARK_BG_COLOR,
                     },
                   ]}>
                   <TouchableWithoutFeedback>
@@ -485,20 +493,18 @@ const ListOfData = ({navigation}) => {
                         styles.card,
                         {
                           backgroundColor:
-                            THEME.data == 'light'
+                            THEME.data === 'light'
                               ? LIGHT_BG_COLOR
                               : DARK_BG_COLOR,
                         },
                       ]}>
-                      {/* ------------------------ white container --------------------------------------------- */}
-
                       <View
                         style={{
                           backgroundColor: 'white',
-                          width: '90%',
-                          height: '90%',
+                          width: screenWidth * 0.95,
+                          height: windowHeight * 0.785,
                           alignSelf: 'center',
-                          top: '-5%',
+                          top: '-7.5%',
                         }}>
                         <View>
                           <Text
@@ -506,50 +512,36 @@ const ListOfData = ({navigation}) => {
                               styles.title,
                               {
                                 color:
-                                  THEME.data == 'light'
+                                  THEME.data === 'light'
                                     ? 'red'
                                     : DARK_TEXT_COLOR,
                               },
                             ]}>
-                            {selectedLanguage === 'letest_news'
-                              ? stripHtmlTags(items[currentIndex + 1].title)
-                              : stripHtmlTags(items[currentIndex + 1].title)}
+                            {stripHtmlTags(items[currentIndex + 1].title)}
                           </Text>
                         </View>
 
-                        {/* ----------------------Image--------------------------------  */}
-
                         <View>
                           <Image
-                            source={{
-                              uri: image_url,
-                            }}
+                            source={{uri: image_url}}
                             style={[styles.image, {marginTop: '1%'}]}
                           />
                         </View>
 
-                        {/* ------------------------------short description----------------------------------*/}
                         <View style={{top: '-6%'}}>
                           <Text
                             style={[
                               styles.description,
                               {
                                 color:
-                                  THEME.data == 'light'
+                                  THEME.data === 'light'
                                     ? LIGHT_TEXT_COLOR
                                     : DARK_TEXT_COLOR,
                               },
                             ]}>
-                            {selectedLanguage === 'letest_news'
-                              ? items[currentIndex + 1].body
-                              : items[currentIndex + 1].body}
-                            {/* <TouchableOpacity onPress={handleReadMorePress}>
-                          <Text style={styles.readMore}>... read more</Text>
-                        </TouchableOpacity> */}
+                            {items[currentIndex + 1].body}
                           </Text>
                         </View>
-
-                        {/* ---------- date , whatsapp and share container -------------------- */}
 
                         <View
                           style={{
@@ -557,38 +549,21 @@ const ListOfData = ({navigation}) => {
                             bottom: '4%',
                             left: '2.5%',
                             borderWidth: 1,
-                            width: '30%',
+                            width: screenWidth * 0.3,
                             borderRadius: 5,
                           }}>
-                          {/* -------------------------date container --------------------------- */}
                           <Iconss
                             name="access-time"
                             size={25}
-                            // color={
-                            //   THEME.data === 'light'
-                            //     ? LIGHT_TEXT_COLOR
-                            //     : DARK_TEXT_COLOR
-                            // }
                             style={{left: '9%', top: '2%'}}
                           />
                           <Text
                             style={{
                               marginTop: '3.9%',
                               marginLeft: '7%',
-                              // color:
-                              //   THEME.data === 'light'
-                              //     ? LIGHT_TEXT_COLOR
-                              //     : DARK_TEXT_COLOR,
                             }}>
-                            {/* 
-    {selectedLanguage === 'latest_news'
-      ? items[currentIndex].art_created_date
-      : items[currentIndex].lt_notif_date} 
-  */}
                             26/08/2024
                           </Text>
-
-                          {/* -------------------whatsapp and share container ------------------------ */}
 
                           <View
                             style={{
@@ -596,7 +571,6 @@ const ListOfData = ({navigation}) => {
                               flexDirection: 'row',
                               top: '-3%',
                             }}>
-                            {/* -----------------------------whatsapp container--------------------------- */}
                             <TouchableOpacity
                               style={{
                                 flexDirection: 'row',
@@ -614,7 +588,6 @@ const ListOfData = ({navigation}) => {
                               />
                               <Text>whatsapp</Text>
                             </TouchableOpacity>
-                            {/* --------------------------------------share container ----------------------------- */}
                             <TouchableOpacity
                               style={{
                                 flexDirection: 'row',
@@ -639,19 +612,18 @@ const ListOfData = ({navigation}) => {
                 </Animated.View>
               )}
 
-              {/* ---------------------------- */}
               {currentIndex > 0 && (
                 <Animated.View
                   style={[
                     styles.cardContainer,
                     {
-                      zIndex: 0,
-                      position: readMoreClick ? 'relative' : 'absolute',
+                      zIndex: 1,
+                      position: 'absolute',
                       transform: [{translateY: prevSwipeAnimation}],
                     },
                     {
                       backgroundColor:
-                        THEME.data == 'light' ? LIGHT_BG_COLOR : DARK_BG_COLOR,
+                        THEME.data === 'light' ? LIGHT_BG_COLOR : DARK_BG_COLOR,
                     },
                   ]}>
                   <TouchableWithoutFeedback>
@@ -660,47 +632,37 @@ const ListOfData = ({navigation}) => {
                         styles.card,
                         {
                           backgroundColor:
-                            THEME.data == 'light'
+                            THEME.data === 'light'
                               ? LIGHT_BG_COLOR
                               : DARK_BG_COLOR,
                         },
                       ]}>
-                      {/* ---------------------white background container---------------------------- */}
-
                       <View
                         style={{
                           backgroundColor: 'white',
-                          width: '90%',
-                          height: '90%',
+                          width: screenWidth * 0.95,
+                          height: windowHeight * 0.785,
                           alignSelf: 'center',
-                          top: '-5%',
+                          top: '-7.5%',
                         }}>
-                        {/* ------------------------------title----------------------------------------------- */}
-
                         <View>
                           <Text
                             style={[
                               styles.title,
                               {
                                 color:
-                                  THEME.data == 'light'
+                                  THEME.data === 'light'
                                     ? 'red'
                                     : DARK_TEXT_COLOR,
                               },
                             ]}>
-                            {selectedLanguage === 'letest_news'
-                              ? stripHtmlTags(items[currentIndex - 1].title)
-                              : stripHtmlTags(items[currentIndex - 1].title)}
+                            {stripHtmlTags(items[currentIndex - 1].title)}
                           </Text>
                         </View>
 
-                        {/* --------------------------image-------------------------------------------------- */}
-
                         <View>
                           <Image
-                            source={{
-                              uri: image_url,
-                            }}
+                            source={{uri: image_url}}
                             style={styles.image}
                           />
                         </View>
@@ -711,21 +673,14 @@ const ListOfData = ({navigation}) => {
                               styles.description,
                               {
                                 color:
-                                  THEME.data == 'light'
+                                  THEME.data === 'light'
                                     ? LIGHT_TEXT_COLOR
                                     : DARK_TEXT_COLOR,
                               },
                             ]}>
-                            {selectedLanguage === 'letest_news'
-                              ? items[currentIndex - 1].body
-                              : items[currentIndex - 1].body}
-                            {/* <TouchableOpacity onPress={handleReadMorePress}>
-                          <Text style={styles.readMore}>... read more</Text>
-                        </TouchableOpacity> */}
+                            {items[currentIndex - 1].body}
                           </Text>
                         </View>
-
-                        {/* ---------- date , whatsapp and share container -------------------- */}
 
                         <View
                           style={{
@@ -733,38 +688,21 @@ const ListOfData = ({navigation}) => {
                             bottom: '4%',
                             left: '2.5%',
                             borderWidth: 1,
-                            width: '30%',
+                            width: screenWidth * 0.3,
                             borderRadius: 5,
                           }}>
-                          {/* -------------------------date container --------------------------- */}
                           <Iconss
                             name="access-time"
                             size={25}
-                            // color={
-                            //   THEME.data === 'light'
-                            //     ? LIGHT_TEXT_COLOR
-                            //     : DARK_TEXT_COLOR
-                            // }
                             style={{left: '9%', top: '2%'}}
                           />
                           <Text
                             style={{
                               marginTop: '3.9%',
                               marginLeft: '7%',
-                              // color:
-                              //   THEME.data === 'light'
-                              //     ? LIGHT_TEXT_COLOR
-                              //     : DARK_TEXT_COLOR,
                             }}>
-                            {/* 
-    {selectedLanguage === 'latest_news'
-      ? items[currentIndex].art_created_date
-      : items[currentIndex].lt_notif_date} 
-  */}
                             26/08/2024
                           </Text>
-
-                          {/* -------------------whatsapp and share container ------------------------ */}
 
                           <View
                             style={{
@@ -772,7 +710,6 @@ const ListOfData = ({navigation}) => {
                               flexDirection: 'row',
                               top: '-3%',
                             }}>
-                            {/* -----------------------------whatsapp container--------------------------- */}
                             <TouchableOpacity
                               style={{
                                 flexDirection: 'row',
@@ -790,7 +727,6 @@ const ListOfData = ({navigation}) => {
                               />
                               <Text>whatsapp</Text>
                             </TouchableOpacity>
-                            {/* --------------------------------------share container ----------------------------- */}
                             <TouchableOpacity
                               style={{
                                 flexDirection: 'row',
@@ -822,6 +758,7 @@ const ListOfData = ({navigation}) => {
         <View style={styles.overlay}>
           <Header
             onSelectedLanguage={handleLanguageChange}
+            onHandleDrawer_navigation={handleContentPress}
             selectedLanguage={selectedLanguage}
           />
         </View>
@@ -898,7 +835,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     margin: '10%',
-    width: 370,
+    width: screenWidth * 0.9,
     color: 'black',
     left: '-4%',
     top: '-15%',
@@ -911,6 +848,7 @@ const styles = StyleSheet.create({
     color: '#333',
     left: '5%',
     marginTop: 0,
+    width: screenWidth * 0.88, // 90% of the screen width
     //  marginLeft:'4%'
     // top: '-3%',
     // backgroundColor: 'red',
@@ -970,7 +908,8 @@ const styles = StyleSheet.create({
   overlayFooter: {
     position: 'absolute',
     // top: '92%',
-    top: 690,
+    // top: 715,
+    top: SCREEN_HEIGHT * 0.922, // 92% from the top of the screen
     left: 0,
     right: 0,
     zIndex: 100,
@@ -984,9 +923,13 @@ const styles = StyleSheet.create({
     zIndex: 100,
   },
   stickyAd: {
-    top: -260,
+    // top: -270,
+    top: -(SCREEN_HEIGHT * 0.355),
     width: '90.5%',
   },
 });
 
 export default ListOfData;
+
+
+// background: linear-gradient(180deg, #781FDA 0%, #4162D8 46.88%, #4162D8 98.44%);

@@ -1,19 +1,20 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons'; // Import your icon set
 
 const Drawer_navigation = ({ onHandleClick }) => {
-  // Define the data for the buttons
+  // Define the data for the buttons including icon names
   const data = [
-    { id: 1, label: 'Home' },
-    { id: 2, label: 'Profile' },
-    { id: 3, label: 'Settings' },
-    { id: 4, label: 'Notifications' },
-    { id: 5, label: 'Messages' },
-    { id: 6, label: 'Favorites' },
-    { id: 7, label: 'Friends' },
-    { id: 8, label: 'Search' },
-    { id: 9, label: 'Help' },
-    { id: 10, label: 'Logout' },
+    { id: 1, label: 'Home', icon: 'home' },
+    { id: 2, label: 'Profile', icon: 'person' },
+    { id: 3, label: 'Settings', icon: 'settings' },
+    { id: 4, label: 'Notifications', icon: 'notifications' },
+    { id: 5, label: 'Messages', icon: 'message' },
+    { id: 6, label: 'Favorites', icon: 'star' },
+    { id: 7, label: 'Friends', icon: 'group' },
+    { id: 8, label: 'Search', icon: 'search' },
+    { id: 9, label: 'Help', icon: 'help' },
+    { id: 10, label: 'Logout', icon: 'logout' },
   ];
 
   const handleButtonPress = (item) => {
@@ -29,6 +30,7 @@ const Drawer_navigation = ({ onHandleClick }) => {
           key={item.id}
           style={styles.button}
           onPress={() => handleButtonPress(item)}>
+          <Icon name={item.icon} size={24} color="#f0f0f0" style={styles.icon} />
           <Text style={styles.buttonText}>{item.label}</Text>
         </TouchableOpacity>
       ))}
@@ -39,31 +41,34 @@ const Drawer_navigation = ({ onHandleClick }) => {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    backgroundColor: '#3795BD',
-    // width: 190,
+    backgroundColor: '#295F98',
     width: '66%',
     height: 540,
-    // height: '80%',
     top: 85,
-    // top: '50%',
-    // right: -90,
     right: '-35%',
-
   },
   button: {
-    // backgroundColor: '#f0f0f0',
+    flexDirection: 'row', // Arrange icon and text in a row
+    alignItems: 'center', // Align items vertically center
     padding: '5%',
     borderRadius: 5,
     marginBottom: '5%',
     borderColor: 'lightgray',
-    // borderWidth: 1,
-    width: '75%',
-    left: '9%',
+    width: '115%',
+    left: '-2.5%',
+    borderBottomWidth: 1, // Add border width here
+    borderColor:'#000000'
+
+
   },
   buttonText: {
     fontSize: 16,
     color: '#f0f0f0',
     textAlign: 'center',
+    marginLeft: 20, // Add some space between icon and text
+  },
+  icon: {
+    marginLeft: 15, // Add some space between icon and text
   },
 });
 
