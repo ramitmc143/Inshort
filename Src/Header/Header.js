@@ -28,7 +28,7 @@ const Header = ({
 }) => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [drawerVisible, setDrawerVisible] = useState(false);
-  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValue, setSelectedValue] = useState('Letest news');
 
   const drawerAnimation = useRef(new Animated.Value(300)).current; // Adjust 300 based on drawer width
 
@@ -100,6 +100,11 @@ const Header = ({
           styles.container,
           {backgroundColor: THEME.data == 'light' ? '#ffffff' : DARK_BG_COLOR},
         ]}>
+           {/* <View style={{top:'-1%',zIndex:15}}>
+             <Text>
+                Logo
+             </Text>
+          </View> */}
         <View style={styles.item}>
           <TouchableOpacity style={styles.discover}>
             <Text
@@ -116,16 +121,17 @@ const Header = ({
                 selectedLanguage === 'letest_news' && styles.selectedText,
                 text_color,
               ]}>
-              {selectedValue
-                ? capitalizeFirstLetter(selectedValue)
-                : capitalizeFirstLetter(selectedLanguage)}
+              {
+                selectedValue
+                // ? capitalizeFirstLetter(selectedValue)
+                // : capitalizeFirstLetter(selectedLanguage)
+              }
             </Text>
           </TouchableOpacity>
         </View>
 
         <View
           style={[styles.item, styles.centerItem, {left: '145%', top: '1%'}]}>
-
           <Switch
             value={selectedLanguage === 'telugu'}
             onValueChange={() =>

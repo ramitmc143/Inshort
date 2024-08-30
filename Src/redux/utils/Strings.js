@@ -8,12 +8,12 @@ export const letest_news_in_english = 'letest news';
 export const letest_news_in_telugu = 'తాజా వార్తలు';
 
 
-export const education_news_in_english = 'Education News';
-export const education_news_in_telugu = 'విద్యా వార్తలు';
+export const education_news_in_english = 'News';
+export const education_news_in_telugu = 'వార్తలు';
 
 
-export const notifications_in_english = 'Notifications';
-export const notifications_in_telugu = 'నోటిఫికేషన్లు';
+export const notifications_in_english = 'Jobs';
+export const notifications_in_telugu = 'ఉద్యోగాలు';
 
 
 

@@ -5,9 +5,24 @@ import Iconss from 'react-native-vector-icons/Ionicons';
 import Iconsss from 'react-native-vector-icons/Feather';
 import Iconssss from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useNavigation} from '@react-navigation/native';
-import { useSelector } from 'react-redux';
-import { DARK_BG_COLOR, LIGHT_BG_COLOR, DARK_TEXT_COLOR, LIGHT_TEXT_COLOR } from '../redux/utils/Colors';
-import { education_news_in_english, education_news_in_telugu, model_paper_in_english, model_paper_in_telugu, more_in_english, more_in_telugu, notifications_in_english, notifications_in_telugu , current_affairs_in_english} from '../redux/utils/Strings';
+import {useSelector} from 'react-redux';
+import {
+  DARK_BG_COLOR,
+  LIGHT_BG_COLOR,
+  DARK_TEXT_COLOR,
+  LIGHT_TEXT_COLOR,
+} from '../redux/utils/Colors';
+import {
+  education_news_in_english,
+  education_news_in_telugu,
+  model_paper_in_english,
+  model_paper_in_telugu,
+  more_in_english,
+  more_in_telugu,
+  notifications_in_english,
+  notifications_in_telugu,
+  current_affairs_in_english,
+} from '../redux/utils/Strings';
 
 const Footer = ({handleModalVisible}) => {
   const navigation = useNavigation();
@@ -29,56 +44,113 @@ const Footer = ({handleModalVisible}) => {
   }, [modalVisible, handleModalVisible]);
 
   return (
-    <View style={[styles.container, {backgroundColor:THEME.data == 'light' ? '#ffffff' :DARK_BG_COLOR}]}>
+    <View
+      style={[
+        styles.container,
+        {backgroundColor: THEME.data == 'light' ? '#ffffff' : DARK_BG_COLOR},
+      ]}>
       <TouchableOpacity
         style={styles.iconContainer}
-        onPress={() => navigation.navigate('Education')}
-        >
+        onPress={() => navigation.navigate('Notification')}>
         <View>
-          <Iconssss name="book-education" size={20}  color={THEME.data== 'light'? '#AD49E1': DARK_TEXT_COLOR } />
+          <Iconss
+            name="notifications"
+            size={20}
+            color={THEME.data == 'light' ? '#F5004F' : DARK_TEXT_COLOR}
+          />
         </View>
-        <Text style={[styles.text , {color:THEME.data== 'light'? LIGHT_TEXT_COLOR: DARK_TEXT_COLOR }]}>{ education_news_in_english}</Text>
+        <Text
+          style={[
+            styles.text,
+            {color: THEME.data == 'light' ? LIGHT_TEXT_COLOR : DARK_TEXT_COLOR},
+          ]}>
+          {notifications_in_english}
+        </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.iconContainer}
-        onPress={() => navigation.navigate('Education')}
-        >
-        <View>
-          <Iconss name="newspaper-outline" size={20}  color={THEME.data== 'light'? '#AD49E1': DARK_TEXT_COLOR } />
-        </View>
-        <Text style={[styles.text , {color:THEME.data== 'light'? LIGHT_TEXT_COLOR: DARK_TEXT_COLOR }]}>{ current_affairs_in_english}</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.iconContainer}
-        onPress={() => navigation.navigate('Notification')} 
-        >
-        <View>
-          <Iconss name="notifications" size={20} color={THEME.data== 'light'? '#F5004F': DARK_TEXT_COLOR }  />
-        </View>
-        <Text style={[styles.text , {color:THEME.data== 'light'? LIGHT_TEXT_COLOR: DARK_TEXT_COLOR }]}>{notifications_in_english}</Text>
-      </TouchableOpacity>
 
       <TouchableOpacity style={styles.iconContainer}>
         <View>
-          <Iconss name="newspaper" size={20} color={THEME.data== 'light'? '#0A90F6': DARK_TEXT_COLOR }  />
+          <Iconss
+            name="newspaper"
+            size={20}
+            color={THEME.data == 'light' ? '#0A90F6' : DARK_TEXT_COLOR}
+          />
         </View>
-        <Text style={[styles.text, {color:THEME.data== 'light'? LIGHT_TEXT_COLOR: DARK_TEXT_COLOR }]}>{ model_paper_in_english}</Text>
+        <Text
+          style={[
+            styles.text,
+            {color: THEME.data == 'light' ? LIGHT_TEXT_COLOR : DARK_TEXT_COLOR},
+          ]}>
+          {model_paper_in_english}
+        </Text>
       </TouchableOpacity>
+
+
+
+      <TouchableOpacity
+        style={styles.iconContainer}
+        onPress={() => navigation.navigate('Education')}>
+        <View>
+          <Iconss
+            name="newspaper-outline"
+            size={20}
+            color={THEME.data == 'light' ? '#AD49E1' : DARK_TEXT_COLOR}
+          />
+        </View>
+        <Text
+          style={[
+            styles.text,
+            {color: THEME.data == 'light' ? LIGHT_TEXT_COLOR : DARK_TEXT_COLOR},
+          ]}>
+          {current_affairs_in_english}
+        </Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.iconContainer}
+        onPress={() => navigation.navigate('Education')}>
+        <View>
+          <Iconssss
+            name="book-education"
+            size={20}
+            color={THEME.data == 'light' ? '#AD49E1' : DARK_TEXT_COLOR}
+          />
+        </View>
+        <Text
+          style={[
+            styles.text,
+            {color: THEME.data == 'light' ? LIGHT_TEXT_COLOR : DARK_TEXT_COLOR},
+          ]}>
+          {education_news_in_english}
+        </Text>
+      </TouchableOpacity>
+
+     
+
+     
 
       <TouchableOpacity
         style={styles.iconContainer}
         // onPress={handleModalToggle}
         onPress={
-            // () => navigation.navigate('More_model')
-                  toggleModal
-                }
-        >
+          // () => navigation.navigate('More_model')
+          toggleModal
+        }>
         <View>
-          <Iconsss name="more-horizontal" size={25}  color={THEME.data== 'light'? '#C738BD': DARK_TEXT_COLOR } />
+          <Iconsss
+            name="more-horizontal"
+            size={25}
+            color={THEME.data == 'light' ? '#C738BD' : DARK_TEXT_COLOR}
+          />
         </View>
-        <Text style={[styles.text , {color:THEME.data== 'light'? LIGHT_TEXT_COLOR: DARK_TEXT_COLOR }]}>{ more_in_english}</Text>
+        <Text
+          style={[
+            styles.text,
+            {color: THEME.data == 'light' ? LIGHT_TEXT_COLOR : DARK_TEXT_COLOR},
+          ]}>
+          {more_in_english}
+        </Text>
       </TouchableOpacity>
 
       {/* <Modal

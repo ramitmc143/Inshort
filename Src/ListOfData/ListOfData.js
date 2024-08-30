@@ -18,6 +18,7 @@ import Footer from '../Footer/Footer';
 import Iconss from 'react-native-vector-icons/MaterialIcons';
 import Iconssss from 'react-native-vector-icons/FontAwesome';
 import Iconssssss from 'react-native-vector-icons/Entypo';
+import Iconsss from 'react-native-vector-icons/Feather';
 import getFcmToken from '../getFcmToken/getFcmToken';
 import PushNotification from '../push_notification/push_notification';
 import {useFocusEffect, useTheme} from '@react-navigation/native';
@@ -33,7 +34,7 @@ import {
 const {height: SCREEN_HEIGHT} = Dimensions.get('window');
 const screenWidth = Dimensions.get('window').width;
 
-const ListOfData = ({navigation , onCloseDrawer}) => {
+const ListOfData = ({navigation, onCloseDrawer}) => {
   // State management using hooks
   const [showHeaderFooter, setShowHeaderFooter] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('telugu');
@@ -47,7 +48,7 @@ const ListOfData = ({navigation , onCloseDrawer}) => {
   const [valueOfMoreModelOfFooter, setValueOfMoreModelOfFooter] =
     useState(true);
   const [isMoreModalVisible, setIsMoreModalVisible] = useState(false); // New state for modal visibility
-  const [drawer_navigation , setDrawer_navigation] = useState(false)
+  const [drawer_navigation, setDrawer_navigation] = useState(false);
   const windowHeight = Dimensions.get('window').height;
 
   // const { theme } = useTheme();
@@ -248,7 +249,7 @@ const ListOfData = ({navigation , onCloseDrawer}) => {
     //   setShowHeaderFooter(false);
     // }, 3000);
     return () => clearTimeout(timeoutRef.current);
-  }, [showHeaderFooter,navigation]);
+  }, [showHeaderFooter, navigation]);
 
   const handleReadMorePress = useCallback(() => {
     // setReadMoreClick(!readMoreClick);
@@ -333,25 +334,37 @@ const ListOfData = ({navigation , onCloseDrawer}) => {
                       style={{
                         backgroundColor: 'white',
                         width: screenWidth * 0.95, // 90% of the screen width
-                        height: windowHeight * 0.8,
+                        height: windowHeight * 0.66,
                         alignSelf: 'center',
-                        top: '-7.5%',
+                        top: '-15.5%',
                       }}>
                       {/* ------------------------------title----------------------------------------------- */}
-                      <View>
-                        <Text
-                          style={[
-                            styles.title,
-                            {
-                              color:
-                                THEME.data == 'light' ? 'red' : DARK_TEXT_COLOR,
-                            },
-                          ]}>
-                          {selectedLanguage === 'letest_news'
-                            ? stripHtmlTags(items[currentIndex].title)
-                            : stripHtmlTags(items[currentIndex].title)}
-                        </Text>
-                      </View>
+                     <View
+  style={{
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  }}>
+  <Text
+    style={[
+      styles.title,
+      {
+        color: THEME.data === 'light' ? 'red' : DARK_TEXT_COLOR,
+      },
+    ]}>
+    {selectedLanguage === 'letest_news'
+      ? stripHtmlTags(items[currentIndex].title)
+      : stripHtmlTags(items[currentIndex].title)}
+  </Text>
+
+  <Iconssssss
+    name="share"
+    size={30}
+    color="#20a7db"
+    style={{ marginLeft: 10 }}
+  />
+</View>
+
 
                       {/* ---------------------------Image---------------------------------------------------- */}
 
@@ -386,88 +399,55 @@ const ListOfData = ({navigation , onCloseDrawer}) => {
                       </View>
 
                       {/* ---------- date , whatsapp and share container -------------------- */}
+
                       <View
                         style={{
                           flexDirection: 'row',
-                          bottom: '4%',
-                          left: '2.5%',
-                          borderWidth: 1,
-                          width: screenWidth * 0.3, // 90% of the screen width
-                          borderRadius: 5,
+                          justifyContent: 'space-around',
                         }}>
-                        {/* -------------------------date container --------------------------- */}
-                        <Iconss
-                          name="access-time"
-                          size={25}
-                          // color={
-                          //   THEME.data === 'light'
-                          //     ? LIGHT_TEXT_COLOR
-                          //     : DARK_TEXT_COLOR
-                          // }
-                          style={{left: '9%', top: '2%'}}
-                        />
-                        <Text
-                          style={{
-                            marginTop: '3.9%',
-                            marginLeft: '7%',
-                            // color:
+                        <View style={{flexDirection: 'row'}}>
+                          <Iconss
+                            name="access-time"
+                            size={25}
+                            // color={
                             //   THEME.data === 'light'
                             //     ? LIGHT_TEXT_COLOR
-                            //     : DARK_TEXT_COLOR,
-                          }}>
-                          {/* 
-    {selectedLanguage === 'latest_news'
-      ? items[currentIndex].art_created_date
-      : items[currentIndex].lt_notif_date} 
-  */}
-                          26/08/2024
-                        </Text>
-
-                        {/* -------------------whatsapp and share container ------------------------ */}
-
-                        <View
-                          style={{
-                            right: '-35%',
-                            flexDirection: 'row',
-                            top: '-3%',
-                          }}>
-                          {/* -----------------------------whatsapp container--------------------------- */}
-                          <TouchableOpacity
+                            //     : DARK_TEXT_COLOR
+                            // }
+                            // style={{left: '9%', top: '2%'}}
+                            color={'#0A90F6'}
+                          />
+                          <Text
                             style={{
-                              flexDirection: 'row',
-                              marginLeft: '3%',
-                              padding: '2%',
-                              left: '-1%',
-                              borderWidth: 1,
-                              width: Dimensions.get('window').width * 0.25,
-                              borderRadius: 5,
+                              marginTop: '3.9%',
+                              marginLeft: '7%',
+                              // color:
+                              //   THEME.data === 'light'
+                              //     ? LIGHT_TEXT_COLOR
+                              //     : DARK_TEXT_COLOR,
                             }}>
-                            <Iconssss
-                              name="whatsapp"
-                              size={24}
-                              style={{marginHorizontal: '4%'}}
-                            />
-                            <Text>whatsapp</Text>
-                          </TouchableOpacity>
-                          {/* --------------------------------------share container ----------------------------- */}
-                          <TouchableOpacity
-                            style={{
-                              flexDirection: 'row',
-                              padding: '2%',
-                              left: '1%',
-                              borderWidth: 1,
-                              width: Dimensions.get('window').width * 0.25,
-                              borderRadius: 5,
-                            }}>
-                            <Iconssssss
-                              name="share"
-                              size={24}
-                              style={{marginHorizontal: '4%'}}
-                            />
-                            <Text>share</Text>
-                          </TouchableOpacity>
+                            26/08/2024
+                          </Text>
                         </View>
+                        <TouchableOpacity
+                          style={{
+                            flexDirection: 'row',
+                            padding: '2%',
+                            left: '1%',
+                            // borderWidth: 1,
+                            width: Dimensions.get('window').width * 0.25,
+                            borderRadius: 5,
+                          }}>
+                          <Iconsss
+                            name="more-horizontal"
+                            size={24}
+                            style={{marginHorizontal: '4%'}}
+                            color={'#0A90F6'}
+                          />
+                          <Text>read more</Text>
+                        </TouchableOpacity>
                       </View>
+
                       {/* ---------------------------- date , whatsapp and share container, end------------------------------------- */}
                     </View>
                   </View>
@@ -502,7 +482,7 @@ const ListOfData = ({navigation , onCloseDrawer}) => {
                         style={{
                           backgroundColor: 'white',
                           width: screenWidth * 0.95,
-                          height: windowHeight * 0.785,
+                          height: windowHeight * 0.66,
                           alignSelf: 'center',
                           top: '-7.5%',
                         }}>
@@ -546,65 +526,49 @@ const ListOfData = ({navigation , onCloseDrawer}) => {
                         <View
                           style={{
                             flexDirection: 'row',
-                            bottom: '4%',
-                            left: '2.5%',
-                            borderWidth: 1,
-                            width: screenWidth * 0.3,
-                            borderRadius: 5,
+                            justifyContent: 'space-around',
                           }}>
-                          <Iconss
-                            name="access-time"
-                            size={25}
-                            style={{left: '9%', top: '2%'}}
-                          />
-                          <Text
-                            style={{
-                              marginTop: '3.9%',
-                              marginLeft: '7%',
-                            }}>
-                            26/08/2024
-                          </Text>
-
-                          <View
-                            style={{
-                              right: '-35%',
-                              flexDirection: 'row',
-                              top: '-3%',
-                            }}>
-                            <TouchableOpacity
+                          <View style={{flexDirection: 'row'}}>
+                            <Iconss
+                              name="access-time"
+                              size={25}
+                              // color={
+                              //   THEME.data === 'light'
+                              //     ? LIGHT_TEXT_COLOR
+                              //     : DARK_TEXT_COLOR
+                              // }
+                              // style={{left: '9%', top: '2%'}}
+                              color={'#0A90F6'}
+                            />
+                            <Text
                               style={{
-                                flexDirection: 'row',
-                                marginLeft: '3%',
-                                padding: '2%',
-                                left: '-1%',
-                                borderWidth: 1,
-                                width: Dimensions.get('window').width * 0.25,
-                                borderRadius: 5,
+                                marginTop: '3.9%',
+                                marginLeft: '7%',
+                                // color:
+                                //   THEME.data === 'light'
+                                //     ? LIGHT_TEXT_COLOR
+                                //     : DARK_TEXT_COLOR,
                               }}>
-                              <Iconssss
-                                name="whatsapp"
-                                size={24}
-                                style={{marginHorizontal: '4%'}}
-                              />
-                              <Text>whatsapp</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                              style={{
-                                flexDirection: 'row',
-                                padding: '2%',
-                                left: '3%',
-                                borderWidth: 1,
-                                width: Dimensions.get('window').width * 0.25,
-                                borderRadius: 5,
-                              }}>
-                              <Iconssssss
-                                name="share"
-                                size={24}
-                                style={{marginHorizontal: '4%'}}
-                              />
-                              <Text>share</Text>
-                            </TouchableOpacity>
+                              26/08/2024
+                            </Text>
                           </View>
+                          <TouchableOpacity
+                            style={{
+                              flexDirection: 'row',
+                              padding: '2%',
+                              left: '1%',
+                              // borderWidth: 1,
+                              width: Dimensions.get('window').width * 0.25,
+                              borderRadius: 5,
+                            }}>
+                            <Iconsss
+                              name="more-horizontal"
+                              size={24}
+                              style={{marginHorizontal: '4%'}}
+                              color={'#0A90F6'}
+                            />
+                            <Text>read more</Text>
+                          </TouchableOpacity>
                         </View>
                       </View>
                     </View>
@@ -641,7 +605,7 @@ const ListOfData = ({navigation , onCloseDrawer}) => {
                         style={{
                           backgroundColor: 'white',
                           width: screenWidth * 0.95,
-                          height: windowHeight * 0.785,
+                          height: windowHeight * 0.66,
                           alignSelf: 'center',
                           top: '-7.5%',
                         }}>
@@ -685,65 +649,49 @@ const ListOfData = ({navigation , onCloseDrawer}) => {
                         <View
                           style={{
                             flexDirection: 'row',
-                            bottom: '4%',
-                            left: '2.5%',
-                            borderWidth: 1,
-                            width: screenWidth * 0.3,
-                            borderRadius: 5,
+                            justifyContent: 'space-around',
                           }}>
-                          <Iconss
-                            name="access-time"
-                            size={25}
-                            style={{left: '9%', top: '2%'}}
-                          />
-                          <Text
-                            style={{
-                              marginTop: '3.9%',
-                              marginLeft: '7%',
-                            }}>
-                            26/08/2024
-                          </Text>
-
-                          <View
-                            style={{
-                              right: '-35%',
-                              flexDirection: 'row',
-                              top: '-3%',
-                            }}>
-                            <TouchableOpacity
+                          <View style={{flexDirection: 'row'}}>
+                            <Iconss
+                              name="access-time"
+                              size={25}
+                              // color={
+                              //   THEME.data === 'light'
+                              //     ? LIGHT_TEXT_COLOR
+                              //     : DARK_TEXT_COLOR
+                              // }
+                              // style={{left: '9%', top: '2%'}}
+                              color={'#0A90F6'}
+                            />
+                            <Text
                               style={{
-                                flexDirection: 'row',
-                                marginLeft: '3%',
-                                padding: '2%',
-                                left: '-1%',
-                                borderWidth: 1,
-                                width: Dimensions.get('window').width * 0.25,
-                                borderRadius: 5,
+                                marginTop: '3.9%',
+                                marginLeft: '7%',
+                                // color:
+                                //   THEME.data === 'light'
+                                //     ? LIGHT_TEXT_COLOR
+                                //     : DARK_TEXT_COLOR,
                               }}>
-                              <Iconssss
-                                name="whatsapp"
-                                size={24}
-                                style={{marginHorizontal: '4%'}}
-                              />
-                              <Text>whatsapp</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                              style={{
-                                flexDirection: 'row',
-                                padding: '2%',
-                                left: '3%',
-                                borderWidth: 1,
-                                width: Dimensions.get('window').width * 0.25,
-                                borderRadius: 5,
-                              }}>
-                              <Iconssssss
-                                name="share"
-                                size={24}
-                                style={{marginHorizontal: '4%'}}
-                              />
-                              <Text>share</Text>
-                            </TouchableOpacity>
+                              26/08/2024
+                            </Text>
                           </View>
+                          <TouchableOpacity
+                            style={{
+                              flexDirection: 'row',
+                              padding: '2%',
+                              left: '1%',
+                              // borderWidth: 1,
+                              width: Dimensions.get('window').width * 0.25,
+                              borderRadius: 5,
+                            }}>
+                            <Iconsss
+                              name="more-horizontal"
+                              size={24}
+                              style={{marginHorizontal: '4%'}}
+                              color={'#0A90F6'}
+                            />
+                            <Text>read more</Text>
+                          </TouchableOpacity>
                         </View>
                       </View>
                     </View>
@@ -774,7 +722,7 @@ const ListOfData = ({navigation , onCloseDrawer}) => {
             <More_model onHandleCancelModel={handleCancelModel} />
           )}
         </View>
-        <View style={{zIndex: 5, left: '5%'}}>
+        <View style={{zIndex: 5, left: '3%'}}>
           <Image source={require('../Assets/ad.jpg')} style={styles.stickyAd} />
         </View>
       </View>
@@ -835,10 +783,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     margin: '10%',
-    width: screenWidth * 0.9,
+    width: screenWidth * 0.72,
     color: 'black',
     left: '-4%',
-    top: '-15%',
+    top: '-8%',
     // backgroundColor: 'red',
 
     // marginVertical: 10,
@@ -924,12 +872,11 @@ const styles = StyleSheet.create({
   },
   stickyAd: {
     // top: -270,
-    top: -(SCREEN_HEIGHT * 0.355),
-    width: '90.5%',
+    top: -(SCREEN_HEIGHT * 0.34),
+    width: '94.5%',
   },
 });
 
 export default ListOfData;
-
 
 // background: linear-gradient(180deg, #781FDA 0%, #4162D8 46.88%, #4162D8 98.44%);
