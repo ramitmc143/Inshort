@@ -6,7 +6,9 @@ import {
   StyleSheet,
   Animated,
   Easing,
-  TouchableWithoutFeedback, // Import this to detect touches outside the drawer
+  TouchableWithoutFeedback,
+  Image, // Import this to detect touches outside the drawer
+  Dimensions
 } from 'react-native';
 import Iconss from 'react-native-vector-icons/Entypo';
 import {useDispatch, useSelector} from 'react-redux';
@@ -20,6 +22,9 @@ import {
 import {changeLanguage} from '../redux/languageSlice/LanguageSlice';
 import Drawer_navigation from '../drawer_navigation/Drawer_navigation';
 import {Switch} from 'react-native-switch';
+
+const screenWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 const Header = ({
   onSelectedLanguage,
@@ -42,7 +47,7 @@ const Header = ({
       onSelectedLanguage(language);
       dispatch(changeLanguage(language));
       setDropdownVisible(false); // Hide dropdown after selecting language
-      setSelectedValue('');
+      // setSelectedValue('');
     },
     [onSelectedLanguage, dispatch],
   );
@@ -100,18 +105,18 @@ const Header = ({
           styles.container,
           {backgroundColor: THEME.data == 'light' ? '#ffffff' : DARK_BG_COLOR},
         ]}>
-           {/* <View style={{top:'-1%',zIndex:15}}>
-             <Text>
-                Logo
-             </Text>
-          </View> */}
-        <View style={styles.item}>
+           <View style={{top:'0%',zIndex:15,marginLeft:'-4%'}}>
+            <Image  source={require('../Assets/pratibha-logo.png')} style={{ width: screenWidth * 0.17, // 90% of the screen width
+                          height: windowHeight * 0.05,}} />
+                
+           </View>
+        <View style={[styles.item , {marginLeft:'-10%'}]}>
           <TouchableOpacity style={styles.discover}>
             <Text
               style={[
                 styles.text,
                 {
-                  width: 80,
+                  width: 100,
                   marginBottom: 5,
                   letterSpacing: 1,
                   alignItems: 'center',
@@ -129,9 +134,9 @@ const Header = ({
             </Text>
           </TouchableOpacity>
         </View>
-
+     
         <View
-          style={[styles.item, styles.centerItem, {left: '145%', top: '1%'}]}>
+          style={[styles.item, styles.centerItem, {marginRight: '-35%', top: '1%'}]}>
           <Switch
             value={selectedLanguage === 'telugu'}
             onValueChange={() =>
@@ -143,19 +148,19 @@ const Header = ({
             activeText={'TL'}
             inActiveText={'ENG'}
             backgroundActive={'#125B9A'}
-            backgroundInactive={'gray'}
+            backgroundInactive={'#125B9A'}
             circleActiveColor={'#1E2A5E'}
-            circleInActiveColor={'#000000'}
+            circleInActiveColor={'#1E2A5E'}
             innerCircleStyle={{alignItems: 'center', justifyContent: 'center'}}
             outerCircleStyle={{}}
-            switchLeftPx={10}
-            switchRightPx={10}
+            switchLeftPx={8}
+            switchRightPx={8}
             switchWidthMultiplier={2}
-            switchBorderRadius={50}
+            switchBorderRadius={30}
           />
         </View>
 
-        <View>
+        <View >
           <TouchableOpacity style={styles.settingIcon} onPress={toggleDrawer}>
             <Iconss
               name="menu"
@@ -196,7 +201,8 @@ const styles = StyleSheet.create({
     height: 54,
   },
   item: {
-    flex: 1,
+    // flex: 1,
+    width:screenWidth*0.59
   },
   centerItem: {
     justifyContent: 'center',
@@ -219,7 +225,8 @@ const styles = StyleSheet.create({
     borderColor: 'lightgrey',
     borderRadius: 5,
     justifyContent: 'center',
-    left: '210%',
+    // left: '210%',
+    marginLeft:'20%'
   },
   customSwitch: {
     width: 80,
@@ -235,7 +242,7 @@ const styles = StyleSheet.create({
   settingIcon: {
     zIndex: 10,
     position: 'absolute',
-    right: 20,
+    right: '0%',
     top: '-145%',
   },
   drawerContainer: {

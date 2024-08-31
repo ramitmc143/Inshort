@@ -302,7 +302,12 @@ const ListOfData = ({navigation, onCloseDrawer}) => {
               styles.content,
               // {backgroundColor:'red'}
             ]}>
+
+               
+
             <View style={[styles.cardWrapper]}>
+            
+
               <Animated.View
                 style={[
                   styles.cardContainer,
@@ -333,42 +338,53 @@ const ListOfData = ({navigation, onCloseDrawer}) => {
                     <View
                       style={{
                         backgroundColor: 'white',
-                        width: screenWidth * 0.95, // 90% of the screen width
-                        height: windowHeight * 0.66,
+                        width: screenWidth * 0.97, // 90% of the screen width
+                        height: windowHeight * 0.767,
                         alignSelf: 'center',
-                        top: '-15.5%',
+                        top: '-0.5%',
+                        position: 'absolute',
                       }}>
                       {/* ------------------------------title----------------------------------------------- */}
-                     <View
-  style={{
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  }}>
-  <Text
-    style={[
-      styles.title,
-      {
-        color: THEME.data === 'light' ? 'red' : DARK_TEXT_COLOR,
-      },
-    ]}>
-    {selectedLanguage === 'letest_news'
-      ? stripHtmlTags(items[currentIndex].title)
-      : stripHtmlTags(items[currentIndex].title)}
-  </Text>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                        }}>
+                        <Text
+                          style={[
+                            styles.title,
+                            {
+                              color:
+                                THEME.data === 'light'
+                                  ? 'red'
+                                  : DARK_TEXT_COLOR,
+                            },
+                          ]}>
+                          {selectedLanguage === 'letest_news'
+                            ? stripHtmlTags(items[currentIndex].title)
+                            : stripHtmlTags(items[currentIndex].title)}
+                        </Text>
 
-  <Iconssssss
-    name="share"
-    size={30}
-    color="#20a7db"
-    style={{ marginLeft: 10 }}
-  />
-</View>
-
+                        <TouchableOpacity
+                          style={{
+                            position: 'absolute',
+                            right: '2%',
+                            top: '5%',
+                          }}>
+                          <Iconssssss
+                            name="share"
+                            size={30}
+                            color="#20a7db"
+                            style={{marginLeft: 10}}
+                          />
+                        </TouchableOpacity>
+                      </View>
 
                       {/* ---------------------------Image---------------------------------------------------- */}
 
-                      <View>
+                      <View
+                        style={{position: 'absolute', top: '19%', left: '3%'}}>
                         <Image
                           source={{
                             uri: image_url,
@@ -378,7 +394,7 @@ const ListOfData = ({navigation, onCloseDrawer}) => {
                       </View>
 
                       {/* ------------------------------short description---------------------------------------------- */}
-                      <View style={{top: '-6%'}}>
+                      <View style={{position: 'absolute', top: '55%'}}>
                         <Text
                           style={[
                             styles.description,
@@ -404,8 +420,11 @@ const ListOfData = ({navigation, onCloseDrawer}) => {
                         style={{
                           flexDirection: 'row',
                           justifyContent: 'space-around',
+                          position: 'absolute',
+                          bottom: '0%',
+
                         }}>
-                        <View style={{flexDirection: 'row'}}>
+                        <View style={{ flexDirection: 'row', marginTop: '1%',left:'5%'}}>
                           <Iconss
                             name="access-time"
                             size={25}
@@ -419,32 +438,33 @@ const ListOfData = ({navigation, onCloseDrawer}) => {
                           />
                           <Text
                             style={{
-                              marginTop: '3.9%',
+                              marginTop: '1.9%',
                               marginLeft: '7%',
                               // color:
                               //   THEME.data === 'light'
                               //     ? LIGHT_TEXT_COLOR
                               //     : DARK_TEXT_COLOR,
                             }}>
-                            26/08/2024
+                            26/08/2024 13:14 IST
                           </Text>
                         </View>
                         <TouchableOpacity
                           style={{
                             flexDirection: 'row',
-                            padding: '2%',
-                            left: '1%',
+                            padding: '3%',
+                            // right: '-19%',
+                            marginLeft: '32%',
                             // borderWidth: 1,
-                            width: Dimensions.get('window').width * 0.25,
+                            width: Dimensions.get('window').width * 0.29,
                             borderRadius: 5,
                           }}>
                           <Iconsss
                             name="more-horizontal"
                             size={24}
-                            style={{marginHorizontal: '4%'}}
+                            // style={{marginHorizontal: '-8%'}}
                             color={'#0A90F6'}
                           />
-                          <Text>read more</Text>
+                          <Text>Read more</Text>
                         </TouchableOpacity>
                       </View>
 
@@ -478,15 +498,23 @@ const ListOfData = ({navigation, onCloseDrawer}) => {
                               : DARK_BG_COLOR,
                         },
                       ]}>
+                      {/* ---------------------white background container---------------------------- */}
                       <View
                         style={{
                           backgroundColor: 'white',
-                          width: screenWidth * 0.95,
-                          height: windowHeight * 0.66,
+                          width: screenWidth * 0.97, // 90% of the screen width
+                          height: windowHeight * 0.767,
                           alignSelf: 'center',
-                          top: '-7.5%',
+                          top: '-0.5%',
+                          position: 'absolute',
                         }}>
-                        <View>
+                        {/* ------------------------------title----------------------------------------------- */}
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                          }}>
                           <Text
                             style={[
                               styles.title,
@@ -497,18 +525,43 @@ const ListOfData = ({navigation, onCloseDrawer}) => {
                                     : DARK_TEXT_COLOR,
                               },
                             ]}>
-                            {stripHtmlTags(items[currentIndex + 1].title)}
+                            {selectedLanguage === 'letest_news'
+                              ? stripHtmlTags(items[currentIndex + 1].title)
+                              : stripHtmlTags(items[currentIndex + 1].title)}
                           </Text>
+
+                          <TouchableOpacity
+                            style={{
+                              position: 'absolute',
+                              right: '2%',
+                              top: '5%',
+                            }}>
+                            <Iconssssss
+                              name="share"
+                              size={30}
+                              color="#20a7db"
+                              style={{marginLeft: 10}}
+                            />
+                          </TouchableOpacity>
                         </View>
 
-                        <View>
+                        {/* ---------------------------Image---------------------------------------------------- */}
+
+                        <View
+                          style={{
+                            position: 'absolute',
+                            top: '19%',
+                            left: '3%',
+                          }}>
                           <Image
                             source={{uri: image_url}}
                             style={[styles.image, {marginTop: '1%'}]}
                           />
                         </View>
 
-                        <View style={{top: '-6%'}}>
+                        {/* ------------------------------short description---------------------------------------------- */}
+
+                        <View style={{position: 'absolute', top: '55%'}}>
                           <Text
                             style={[
                               styles.description,
@@ -523,12 +576,16 @@ const ListOfData = ({navigation, onCloseDrawer}) => {
                           </Text>
                         </View>
 
+                        {/* ---------- date , whatsapp and share container -------------------- */}
+
                         <View
                           style={{
                             flexDirection: 'row',
                             justifyContent: 'space-around',
+                            position: 'absolute',
+                            bottom: '0%',
                           }}>
-                          <View style={{flexDirection: 'row'}}>
+                          <View style={{flexDirection: 'row', marginTop: '1%',left:'5%'}}>
                             <Iconss
                               name="access-time"
                               size={25}
@@ -542,14 +599,14 @@ const ListOfData = ({navigation, onCloseDrawer}) => {
                             />
                             <Text
                               style={{
-                                marginTop: '3.9%',
+                                marginTop: '1.9%',
                                 marginLeft: '7%',
                                 // color:
                                 //   THEME.data === 'light'
                                 //     ? LIGHT_TEXT_COLOR
                                 //     : DARK_TEXT_COLOR,
                               }}>
-                              26/08/2024
+                              26/08/2024 13:14 IST
                             </Text>
                           </View>
                           <TouchableOpacity
@@ -557,19 +614,21 @@ const ListOfData = ({navigation, onCloseDrawer}) => {
                               flexDirection: 'row',
                               padding: '2%',
                               left: '1%',
+                              marginLeft: '39%',
                               // borderWidth: 1,
-                              width: Dimensions.get('window').width * 0.25,
+                              width: Dimensions.get('window').width * 0.29,
                               borderRadius: 5,
                             }}>
                             <Iconsss
                               name="more-horizontal"
                               size={24}
-                              style={{marginHorizontal: '4%'}}
+                              // style={{marginHorizontal: '4%'}}
                               color={'#0A90F6'}
                             />
-                            <Text>read more</Text>
+                            <Text>Read more</Text>
                           </TouchableOpacity>
                         </View>
+                        {/* ---------------------------- date , whatsapp and share container, end------------------------------------- */}
                       </View>
                     </View>
                   </TouchableWithoutFeedback>
@@ -601,15 +660,25 @@ const ListOfData = ({navigation, onCloseDrawer}) => {
                               : DARK_BG_COLOR,
                         },
                       ]}>
+                      {/* ---------------------white background container---------------------------- */}
+
                       <View
                         style={{
                           backgroundColor: 'white',
-                          width: screenWidth * 0.95,
-                          height: windowHeight * 0.66,
+                          width: screenWidth * 0.97, // 90% of the screen width
+                          height: windowHeight * 0.767,
                           alignSelf: 'center',
-                          top: '-7.5%',
+                          top: '-0.5%',
+                          position: 'absolute',
                         }}>
-                        <View>
+                        {/* ------------------------------title----------------------------------------------- */}
+
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                          }}>
                           <Text
                             style={[
                               styles.title,
@@ -620,18 +689,38 @@ const ListOfData = ({navigation, onCloseDrawer}) => {
                                     : DARK_TEXT_COLOR,
                               },
                             ]}>
-                            {stripHtmlTags(items[currentIndex - 1].title)}
+                            {selectedLanguage === 'letest_news'
+                              ? stripHtmlTags(items[currentIndex].title)
+                              : stripHtmlTags(items[currentIndex].title)}
                           </Text>
+
+                          <TouchableOpacity
+                            style={{
+                              position: 'absolute',
+                              right: '2%',
+                              top: '5%',
+                            }}>
+                            <Iconssssss
+                              name="share"
+                              size={30}
+                              color="#20a7db"
+                              style={{marginLeft: 10}}
+                            />
+                          </TouchableOpacity>
                         </View>
 
-                        <View>
+                        {/* ---------------------------Image---------------------------------------------------- */}
+
+                        <View style={{position: 'absolute', top: '25%'}}>
                           <Image
                             source={{uri: image_url}}
                             style={styles.image}
                           />
                         </View>
 
-                        <View style={{top: '-6%'}}>
+                        {/* ------------------------------short description---------------------------------------------- */}
+
+                        <View style={{position: 'absolute', top: '55%'}}>
                           <Text
                             style={[
                               styles.description,
@@ -646,12 +735,16 @@ const ListOfData = ({navigation, onCloseDrawer}) => {
                           </Text>
                         </View>
 
+                        {/* ---------- date , whatsapp and share container -------------------- */}
+
                         <View
                           style={{
                             flexDirection: 'row',
                             justifyContent: 'space-around',
+                            position: 'absolute',
+                            bottom: '0%',
                           }}>
-                          <View style={{flexDirection: 'row'}}>
+                          <View style={{flexDirection: 'row', marginTop: '1%',left:'5%'}}>
                             <Iconss
                               name="access-time"
                               size={25}
@@ -665,14 +758,14 @@ const ListOfData = ({navigation, onCloseDrawer}) => {
                             />
                             <Text
                               style={{
-                                marginTop: '3.9%',
+                                marginTop: '1.9%',
                                 marginLeft: '7%',
                                 // color:
                                 //   THEME.data === 'light'
                                 //     ? LIGHT_TEXT_COLOR
                                 //     : DARK_TEXT_COLOR,
                               }}>
-                              26/08/2024
+                               26/08/2024 13:14 IST
                             </Text>
                           </View>
                           <TouchableOpacity
@@ -680,19 +773,21 @@ const ListOfData = ({navigation, onCloseDrawer}) => {
                               flexDirection: 'row',
                               padding: '2%',
                               left: '1%',
+                              marginLeft: '39%',
                               // borderWidth: 1,
-                              width: Dimensions.get('window').width * 0.25,
+                              width: Dimensions.get('window').width * 0.29,
                               borderRadius: 5,
                             }}>
                             <Iconsss
                               name="more-horizontal"
                               size={24}
-                              style={{marginHorizontal: '4%'}}
+                              // style={{marginHorizontal: '4%'}}
                               color={'#0A90F6'}
                             />
-                            <Text>read more</Text>
+                            <Text>Read more</Text>
                           </TouchableOpacity>
                         </View>
+                        {/* ---------------------------- date , whatsapp and share container, end------------------------------------- */}
                       </View>
                     </View>
                   </TouchableWithoutFeedback>
@@ -722,8 +817,9 @@ const ListOfData = ({navigation, onCloseDrawer}) => {
             <More_model onHandleCancelModel={handleCancelModel} />
           )}
         </View>
-        <View style={{zIndex: 5, left: '3%'}}>
-          <Image source={require('../Assets/ad.jpg')} style={styles.stickyAd} />
+        
+        <View style={{zIndex: 5, left: '11%',marginTop:' -0.5%'}}>
+          <Image source={require('../Assets/ad.jpg')} style={[styles.stickyAd,{ height:windowHeight*0.07,width:screenWidth *0.8}]} />
         </View>
       </View>
     </TouchableWithoutFeedback>
@@ -776,8 +872,8 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width * 0.9,
     height: Dimensions.get('window').height * 0.25,
     borderRadius: 10,
-    top: '-25%',
-    left: '3.5%',
+    // top: '-25%',
+    // left: '3.5%',
   },
   title: {
     fontSize: 20,
@@ -872,8 +968,14 @@ const styles = StyleSheet.create({
   },
   stickyAd: {
     // top: -270,
-    top: -(SCREEN_HEIGHT * 0.34),
-    width: '94.5%',
+    top: -(SCREEN_HEIGHT * 0.215),
+    // width: '88.89%',
+    // height:'7.81%'
+    //   width: 320,
+    // height:50
+    // height:screenWidth*0.1,
+    // width:
+
   },
 });
 

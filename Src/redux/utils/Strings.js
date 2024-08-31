@@ -17,14 +17,14 @@ export const notifications_in_telugu = 'ఉద్యోగాలు';
 
 
 
-export const model_paper_in_english = 'Model paper';
+export const model_paper_in_english = 'Model Paper';
 export const model_paper_in_telugu = 'మోడల్ పేపర్';
 
 
 export const more_in_english = 'More';
 export const more_in_telugu = 'మరింత';
 
-export const current_affairs_in_english = 'Current affairs';
+export const current_affairs_in_english = 'Current Affairs';
 export const current_affairs_in_telugu = 'ప్రస్తుత వ్యవహారాలు'
 
 
