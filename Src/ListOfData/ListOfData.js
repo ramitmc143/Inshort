@@ -1098,14 +1098,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'transparent',
   },
-  // overlay: {
-  //   position: 'absolute',
-  //   top: 0,
-  //   left: 0,
-  //   right: 0,
-  //   zIndex: 10,
-  //   height: 60, // Fixed height to prevent shifts
-  // },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 10,
+    height: 60, // Fixed height to prevent shifts
+  },
   overlayFooter: {
     position: 'absolute',
     // top: '92%',

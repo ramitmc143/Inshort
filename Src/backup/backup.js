@@ -30,9 +30,11 @@ import {
   LIGHT_TEXT_COLOR,
   DARK_TEXT_COLOR,
 } from '../redux/utils/Colors';
+import Full_screen_ad from '../full_screen_ad/Full_screen_ad';
 
 const {height: SCREEN_HEIGHT} = Dimensions.get('window');
 const screenWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 const ListOfData = ({navigation, onCloseDrawer}) => {
   // State management using hooks
@@ -49,7 +51,8 @@ const ListOfData = ({navigation, onCloseDrawer}) => {
     useState(true);
   const [isMoreModalVisible, setIsMoreModalVisible] = useState(false); // New state for modal visibility
   const [drawer_navigation, setDrawer_navigation] = useState(false);
-  const windowHeight = Dimensions.get('window').height;
+  const [footerClickedData, setFooterClickedData] = useState('');
+  const [cancel_ad_state, setCancel_ad_state] = React.useState(false);
 
   // const { theme } = useTheme();
   // const isDarkMode = theme === 'dark';
@@ -91,7 +94,7 @@ const ListOfData = ({navigation, onCloseDrawer}) => {
     [page],
   );
 
-  console.log('items:-', items);
+  // console.log('items:-', items);
 
   useEffect(() => {
     PushNotification();
@@ -236,9 +239,9 @@ const ListOfData = ({navigation, onCloseDrawer}) => {
   );
 
   const handleContentPress = useCallback(() => {
-    if (onCloseDrawer) {
-      onCloseDrawer(); // Call function to close the drawer
-    }
+    console.log('drawer_navigation clicked');
+    console.log('drawer_navigation-', drawer_navigation);
+    setDrawer_navigation(true);
     setShowHeaderFooter(prev => !prev);
 
     if (timeoutRef.current) {
@@ -284,449 +287,697 @@ const ListOfData = ({navigation, onCloseDrawer}) => {
     setIsMoreModalVisible(false);
   };
 
+  const handleFooterClicked = clicked_data => {
+    setFooterClickedData(clicked_data);
+  };
+
+  const handleCancel_ad_state = () => {
+    console.log('handleCancel_ad_state: ---- clicked');
+    setCancel_ad_state(false); // Set to false to hide the ad
+  };
+
   return (
     <TouchableWithoutFeedback
       onPress={handleContentPress}
       style={{backgroundColor: '#295F98'}}>
-      <View style={styles.container}>
-        {isLoading && page === 0 && (
-          <ActivityIndicator
-            style={styles.loadingIndicator}
-            size="large"
-            color="red"
-          />
-        )}
-        {items && items.length > 0 && (
-          <View
-            style={[
-              styles.content,
-              // {backgroundColor:'red'}
-            ]}>
-            <View style={[styles.cardWrapper]}>
-              <Animated.View
-                style={[
-                  styles.cardContainer,
-                  animatedStyle,
-                  {
-                    zIndex: 1,
-                    position: readMoreClick ? 'relative' : 'absolute',
-                  },
-                  {
-                    backgroundColor:
-                      THEME.data == 'light' ? LIGHT_BG_COLOR : DARK_BG_COLOR,
-                  },
-                ]}
-                {...panResponder.panHandlers}>
-                <TouchableWithoutFeedback onPress={handleContentPress}>
-                  <View
+      <View>
+        <View style={styles.container}>
+          {isLoading && page === 0 && (
+            <ActivityIndicator
+              style={styles.loadingIndicator}
+              size="large"
+              color="red"
+            />
+          )}
+          {items && items.length > 0 && (
+            <View
+              style={[
+                styles.content,
+                // {backgroundColor:'red'}
+              ]}>
+              <View style={[styles.cardWrapper]}>
+                {/* Display full screen ad after every 4th item */}
+
+                {/* ----------------------------------   ------------------------------------------------------- */}
+
+                {currentIndex % 4 === 3 && cancel_ad_state === false ? (
+                  <Animated.View
                     style={[
-                      styles.card,
+                      styles.cardContainer,
+                      animatedStyle,
+                      {
+                        zIndex: 1,
+                        position: readMoreClick ? 'relative' : 'absolute',
+                      },
                       {
                         backgroundColor:
                           THEME.data == 'light'
                             ? LIGHT_BG_COLOR
                             : DARK_BG_COLOR,
-                        justifyContent: 'center',
                       },
-                    ]}>
-                    {/* ---------------------white background container---------------------------- */}
-                    <View
-                      style={{
-                        backgroundColor: 'white',
-                        width: screenWidth * 0.95, // 90% of the screen width
-                        height: windowHeight * 0.66,
-                        alignSelf: 'center',
-                        top: '-15.5%',
-                      }}>
-                      {/* ------------------------------title----------------------------------------------- */}
+                    ]}
+                    {...panResponder.panHandlers}>
+                    <Full_screen_ad
+                      // Attach pan responder handlers here
+                      OnHandleCancel_ad={() => setCancel_ad_state(true)}
+                    />
+                  </Animated.View>
+                ) : (
+                  <Animated.View
+                    style={[
+                      styles.cardContainer,
+                      animatedStyle,
+                      {
+                        zIndex: 1,
+                        position: readMoreClick ? 'relative' : 'absolute',
+                      },
+                      {
+                        backgroundColor:
+                          THEME.data == 'light'
+                            ? LIGHT_BG_COLOR
+                            : DARK_BG_COLOR,
+                      },
+                    ]}
+                    {...panResponder.panHandlers} // Attach pan responder handlers here as well
+                  >
+                    <TouchableWithoutFeedback onPress={handleContentPress}>
                       <View
-                        style={{
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                        }}>
-                        <Text
-                          style={[
-                            styles.title,
-                            {
-                              color:
-                                THEME.data === 'light'
-                                  ? 'red'
-                                  : DARK_TEXT_COLOR,
-                            },
-                          ]}>
-                          {selectedLanguage === 'letest_news'
-                            ? stripHtmlTags(items[currentIndex].title)
-                            : stripHtmlTags(items[currentIndex].title)}
-                        </Text>
-
-                        <Iconssssss
-                          name="share"
-                          size={30}
-                          color="#20a7db"
-                          style={{marginLeft: 10}}
-                        />
-                      </View>
-
-                      {/* ---------------------------Image---------------------------------------------------- */}
-
-                      <View>
-                        <Image
-                          source={{
-                            uri: image_url,
-                          }}
-                          style={styles.image}
-                        />
-                      </View>
-
-                      {/* ------------------------------short description---------------------------------------------- */}
-                      <View style={{top: '-6%'}}>
-                        <Text
-                          style={[
-                            styles.description,
-                            {
-                              color:
-                                THEME.data == 'light'
-                                  ? LIGHT_TEXT_COLOR
-                                  : DARK_TEXT_COLOR,
-                            },
-                          ]}>
-                          {selectedLanguage === 'letest_news'
-                            ? items[currentIndex].body
-                            : items[currentIndex].body}
-                          {/* <TouchableOpacity onPress={handleReadMorePress}>
-                          <Text style={styles.readMore}>... read more</Text>
-                        </TouchableOpacity> */}
-                        </Text>
-                      </View>
-
-                      {/* ---------- date , whatsapp and share container -------------------- */}
-
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          justifyContent: 'space-around',
-                        }}>
-                        <View style={{flexDirection: 'row'}}>
-                          <Iconss
-                            name="access-time"
-                            size={25}
-                            // color={
-                            //   THEME.data === 'light'
-                            //     ? LIGHT_TEXT_COLOR
-                            //     : DARK_TEXT_COLOR
-                            // }
-                            // style={{left: '9%', top: '2%'}}
-                            color={'#0A90F6'}
-                          />
-                          <Text
-                            style={{
-                              marginTop: '3.9%',
-                              marginLeft: '7%',
-                              // color:
-                              //   THEME.data === 'light'
-                              //     ? LIGHT_TEXT_COLOR
-                              //     : DARK_TEXT_COLOR,
-                            }}>
-                            26/08/2024
-                          </Text>
-                        </View>
-                        <TouchableOpacity
-                          style={{
-                            flexDirection: 'row',
-                            padding: '2%',
-                            left: '1%',
-                            // borderWidth: 1,
-                            width: Dimensions.get('window').width * 0.25,
-                            borderRadius: 5,
-                          }}>
-                          <Iconsss
-                            name="more-horizontal"
-                            size={24}
-                            style={{marginHorizontal: '4%'}}
-                            color={'#0A90F6'}
-                          />
-                          <Text>read more</Text>
-                        </TouchableOpacity>
-                      </View>
-
-                      {/* ---------------------------- date , whatsapp and share container, end------------------------------------- */}
-                    </View>
-                  </View>
-                </TouchableWithoutFeedback>
-              </Animated.View>
-              {currentIndex < items.length - 1 && (
-                <Animated.View
-                  style={[
-                    styles.cardContainer,
-                    {
-                      zIndex: 1,
-                      position: 'absolute',
-                      transform: [{translateY: nextSwipeAnimation}],
-                    },
-                    {
-                      backgroundColor:
-                        THEME.data === 'light' ? LIGHT_BG_COLOR : DARK_BG_COLOR,
-                    },
-                  ]}>
-                  <TouchableWithoutFeedback>
-                    <View
-                      style={[
-                        styles.card,
-                        {
-                          backgroundColor:
-                            THEME.data === 'light'
-                              ? LIGHT_BG_COLOR
-                              : DARK_BG_COLOR,
-                        },
-                      ]}>
-                      <View
-                        style={{
-                          backgroundColor: 'white',
-                          width: screenWidth * 0.95,
-                          height: windowHeight * 0.66,
-                          alignSelf: 'center',
-                          top: '-7.5%',
-                        }}>
-                        <View>
-                          <Text
-                            style={[
-                              styles.title,
-                              {
-                                color:
-                                  THEME.data === 'light'
-                                    ? 'red'
-                                    : DARK_TEXT_COLOR,
-                              },
-                            ]}>
-                            {stripHtmlTags(items[currentIndex + 1].title)}
-                          </Text>
-                        </View>
-
-                        <View>
-                          <Image
-                            source={{uri: image_url}}
-                            style={[styles.image, {marginTop: '1%'}]}
-                          />
-                        </View>
-
-                        <View style={{top: '-6%'}}>
-                          <Text
-                            style={[
-                              styles.description,
-                              {
-                                color:
-                                  THEME.data === 'light'
-                                    ? LIGHT_TEXT_COLOR
-                                    : DARK_TEXT_COLOR,
-                              },
-                            ]}>
-                            {items[currentIndex + 1].body}
-                          </Text>
-                        </View>
+                        style={[
+                          styles.card,
+                          {
+                            backgroundColor:
+                              THEME.data == 'light'
+                                ? LIGHT_BG_COLOR
+                                : DARK_BG_COLOR,
+                            justifyContent: 'center',
+                          },
+                        ]}>
+                        {/* ---------------------white background container---------------------------- */}
 
                         <View
                           style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-around',
+                            backgroundColor: 'white',
+                            width: screenWidth * 0.97,
+                            height: windowHeight * 0.753,
+                            alignSelf: 'center',
+                            top: '3.4%',
+                            position: 'absolute',
                           }}>
-                          <View style={{flexDirection: 'row'}}>
-                            <Iconss
-                              name="access-time"
-                              size={25}
-                              // color={
-                              //   THEME.data === 'light'
-                              //     ? LIGHT_TEXT_COLOR
-                              //     : DARK_TEXT_COLOR
-                              // }
-                              // style={{left: '9%', top: '2%'}}
-                              color={'#0A90F6'}
-                            />
-                            <Text
-                              style={{
-                                marginTop: '3.9%',
-                                marginLeft: '7%',
-                                // color:
-                                //   THEME.data === 'light'
-                                //     ? LIGHT_TEXT_COLOR
-                                //     : DARK_TEXT_COLOR,
-                              }}>
-                              26/08/2024
-                            </Text>
-                          </View>
-                          <TouchableOpacity
+                          {/* ------------------------------title----------------------------------------------- */}
+
+                          <View
                             style={{
                               flexDirection: 'row',
-                              padding: '2%',
-                              left: '1%',
-                              // borderWidth: 1,
-                              width: Dimensions.get('window').width * 0.25,
-                              borderRadius: 5,
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
                             }}>
-                            <Iconsss
-                              name="more-horizontal"
-                              size={24}
-                              style={{marginHorizontal: '4%'}}
-                              color={'#0A90F6'}
-                            />
-                            <Text>read more</Text>
-                          </TouchableOpacity>
-                        </View>
-                      </View>
-                    </View>
-                  </TouchableWithoutFeedback>
-                </Animated.View>
-              )}
-
-              {currentIndex > 0 && (
-                <Animated.View
-                  style={[
-                    styles.cardContainer,
-                    {
-                      zIndex: 1,
-                      position: 'absolute',
-                      transform: [{translateY: prevSwipeAnimation}],
-                    },
-                    {
-                      backgroundColor:
-                        THEME.data === 'light' ? LIGHT_BG_COLOR : DARK_BG_COLOR,
-                    },
-                  ]}>
-                  <TouchableWithoutFeedback>
-                    <View
-                      style={[
-                        styles.card,
-                        {
-                          backgroundColor:
-                            THEME.data === 'light'
-                              ? LIGHT_BG_COLOR
-                              : DARK_BG_COLOR,
-                        },
-                      ]}>
-                      <View
-                        style={{
-                          backgroundColor: 'white',
-                          width: screenWidth * 0.95,
-                          height: windowHeight * 0.66,
-                          alignSelf: 'center',
-                          top: '-7.5%',
-                        }}>
-                        <View>
-                          <Text
-                            style={[
-                              styles.title,
-                              {
-                                color:
-                                  THEME.data === 'light'
-                                    ? 'red'
-                                    : DARK_TEXT_COLOR,
-                              },
-                            ]}>
-                            {stripHtmlTags(items[currentIndex - 1].title)}
-                          </Text>
-                        </View>
-
-                        <View>
-                          <Image
-                            source={{uri: image_url}}
-                            style={styles.image}
-                          />
-                        </View>
-
-                        <View style={{top: '-6%'}}>
-                          <Text
-                            style={[
-                              styles.description,
-                              {
-                                color:
-                                  THEME.data === 'light'
-                                    ? LIGHT_TEXT_COLOR
-                                    : DARK_TEXT_COLOR,
-                              },
-                            ]}>
-                            {items[currentIndex - 1].body}
-                          </Text>
-                        </View>
-
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-around',
-                          }}>
-                          <View style={{flexDirection: 'row'}}>
-                            <Iconss
-                              name="access-time"
-                              size={25}
-                              // color={
-                              //   THEME.data === 'light'
-                              //     ? LIGHT_TEXT_COLOR
-                              //     : DARK_TEXT_COLOR
-                              // }
-                              // style={{left: '9%', top: '2%'}}
-                              color={'#0A90F6'}
-                            />
                             <Text
+                              style={[
+                                styles.title,
+                                {
+                                  color:
+                                    THEME.data === 'light'
+                                      ? 'red'
+                                      : DARK_TEXT_COLOR,
+                                },
+                              ]}
+                              numberOfLines={2} // Limit title to a maximum of 2 lines
+                              ellipsizeMode="tail" // Hide overflow with ellipsis
+                            >
+                              {stripHtmlTags(items[currentIndex].title)}
+                            </Text>
+
+                            <TouchableOpacity
                               style={{
-                                marginTop: '3.9%',
-                                marginLeft: '7%',
-                                // color:
-                                //   THEME.data === 'light'
-                                //     ? LIGHT_TEXT_COLOR
-                                //     : DARK_TEXT_COLOR,
+                                position: 'absolute',
+                                right: '2%',
+                                top: '5%',
                               }}>
-                              26/08/2024
+                              <Iconssssss
+                                name="share"
+                                size={25}
+                                color="#20a7db"
+                                style={{marginLeft: 10}}
+                              />
+                            </TouchableOpacity>
+                          </View>
+
+                          {/* ---------------------------Image---------------------------------------------------- */}
+
+                          <View
+                            style={{
+                              position: 'absolute',
+                              top: '17%',
+                              left: '3%',
+                            }}>
+                            <Image
+                              source={{
+                                uri: image_url,
+                              }}
+                              style={styles.image}
+                            />
+                          </View>
+
+                          {/* ------------------------------short description---------------------------------------------- */}
+
+                          <View style={{position: 'absolute', top: '55%'}}>
+                            <Text
+                              style={[
+                                styles.description,
+                                {
+                                  color:
+                                    THEME.data == 'light'
+                                      ? LIGHT_TEXT_COLOR
+                                      : DARK_TEXT_COLOR,
+                                },
+                              ]}
+                              numberOfLines={4}
+                              ellipsizeMode="tail">
+                              {items[currentIndex].body}
                             </Text>
                           </View>
-                          <TouchableOpacity
+
+                          {/* ---------- date , whatsapp and share container -------------------- */}
+
+                          <View
                             style={{
                               flexDirection: 'row',
-                              padding: '2%',
-                              left: '1%',
-                              // borderWidth: 1,
-                              width: Dimensions.get('window').width * 0.25,
-                              borderRadius: 5,
+                              justifyContent: 'space-around',
+                              position: 'absolute',
+                              bottom: '0%',
                             }}>
-                            <Iconsss
-                              name="more-horizontal"
-                              size={24}
-                              style={{marginHorizontal: '4%'}}
-                              color={'#0A90F6'}
-                            />
-                            <Text>read more</Text>
-                          </TouchableOpacity>
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                marginTop: '1%',
+                                left: '5%',
+                              }}>
+                              <Iconss
+                                name="access-time"
+                                size={25}
+                                color={'#0A90F6'}
+                              />
+                              <Text
+                                style={{
+                                  marginTop: '1.9%',
+                                  marginLeft: '7%',
+                                }}>
+                                26/08/2024 13:14 IST
+                              </Text>
+                            </View>
+                            <TouchableOpacity
+                              style={{
+                                flexDirection: 'row',
+                                padding: '3%',
+                                marginLeft: '32%',
+                                // marginBottom:'15%',
+                                width: Dimensions.get('window').width * 0.29,
+                                borderRadius: 5,
+                              }}>
+                              <Iconsss
+                                name="more-horizontal"
+                                size={24}
+                                color={'#0A90F6'}
+                                style={{top: '-1%'}}
+                              />
+                              <Text>Read more</Text>
+                            </TouchableOpacity>
+                          </View>
                         </View>
                       </View>
-                    </View>
-                  </TouchableWithoutFeedback>
-                </Animated.View>
-              )}
+                    </TouchableWithoutFeedback>
+                  </Animated.View>
+                )}
+
+                {/* --------------------------------------------------------------------------------------------- */}
+
+                {currentIndex < items.length - 1 && (
+                  <>
+                    {currentIndex % 4 === 3 ? (
+                      <Animated.View
+                        style={[
+                          styles.cardContainer,
+                          animatedStyle,
+                          {
+                            zIndex: 1,
+                            position: readMoreClick ? 'relative' : 'absolute',
+                          },
+                          {
+                            backgroundColor:
+                              THEME.data == 'light'
+                                ? LIGHT_BG_COLOR
+                                : DARK_BG_COLOR,
+                          },
+                        ]}
+                        {...panResponder.panHandlers}>
+                        <Full_screen_ad
+                        // Attach pan responder handlers here
+                        />
+                      </Animated.View>
+                    ) : (
+                      <Animated.View
+                        style={[
+                          styles.cardContainer,
+                          {
+                            zIndex: 1,
+                            position: 'absolute',
+                            transform: [{translateY: nextSwipeAnimation}],
+                          },
+                          {
+                            backgroundColor:
+                              THEME.data === 'light'
+                                ? LIGHT_BG_COLOR
+                                : DARK_BG_COLOR,
+                          },
+                        ]}>
+                        <TouchableWithoutFeedback>
+                          <View
+                            style={[
+                              styles.card,
+                              {
+                                backgroundColor:
+                                  THEME.data === 'light'
+                                    ? LIGHT_BG_COLOR
+                                    : DARK_BG_COLOR,
+                              },
+                            ]}>
+                            {/* ---------------------white background container---------------------------- */}
+                            <View
+                              style={{
+                                backgroundColor: 'white',
+                                width: screenWidth * 0.97, // 90% of the screen width
+                                height: windowHeight * 0.753,
+                                alignSelf: 'center',
+                                top: '3.4%',
+                                position: 'absolute',
+                              }}>
+                              {/* ------------------------------title----------------------------------------------- */}
+                              <View
+                                style={{
+                                  flexDirection: 'row',
+                                  alignItems: 'center',
+                                  justifyContent: 'space-between',
+                                }}>
+                                <Text
+                                  style={[
+                                    styles.title,
+                                    {
+                                      color:
+                                        THEME.data === 'light'
+                                          ? 'red'
+                                          : DARK_TEXT_COLOR,
+                                    },
+                                  ]}
+                                  numberOfLines={2} // Limit title to a maximum of 2 lines
+                                  ellipsizeMode="tail" // Hide overflow with ellipsis
+                                >
+                                  {selectedLanguage === 'letest_news'
+                                    ? stripHtmlTags(
+                                        items[currentIndex + 1].title,
+                                      )
+                                    : stripHtmlTags(
+                                        items[currentIndex + 1].title,
+                                      )}
+                                </Text>
+
+                                <TouchableOpacity
+                                  style={{
+                                    position: 'absolute',
+                                    right: '2%',
+                                    top: '5%',
+                                  }}>
+                                  <Iconssssss
+                                    name="share"
+                                    size={25}
+                                    color="#20a7db"
+                                    style={{marginLeft: 10}}
+                                  />
+                                </TouchableOpacity>
+                              </View>
+
+                              {/* ---------------------------Image---------------------------------------------------- */}
+
+                              <View
+                                style={{
+                                  position: 'absolute',
+                                  top: '17%',
+                                  left: '3%',
+                                }}>
+                                <Image
+                                  source={{uri: image_url}}
+                                  style={[styles.image, {marginTop: '1%'}]}
+                                />
+                              </View>
+
+                              {/* ------------------------------short description---------------------------------------------- */}
+
+                              <View style={{position: 'absolute', top: '55%'}}>
+                                <Text
+                                  style={[
+                                    styles.description,
+                                    {
+                                      color:
+                                        THEME.data === 'light'
+                                          ? LIGHT_TEXT_COLOR
+                                          : DARK_TEXT_COLOR,
+                                    },
+                                  ]}
+                                  numberOfLines={4}
+                                  ellipsizeMode="tail">
+                                  {items[currentIndex + 1].body}
+                                </Text>
+                              </View>
+
+                              {/* ---------- date , whatsapp and share container -------------------- */}
+
+                              <View
+                                style={{
+                                  flexDirection: 'row',
+                                  justifyContent: 'space-around',
+                                  position: 'absolute',
+                                  bottom: '0%',
+                                }}>
+                                <View
+                                  style={{
+                                    flexDirection: 'row',
+                                    marginTop: '1%',
+                                    left: '5%',
+                                  }}>
+                                  <Iconss
+                                    name="access-time"
+                                    size={25}
+                                    // color={
+                                    //   THEME.data === 'light'
+                                    //     ? LIGHT_TEXT_COLOR
+                                    //     : DARK_TEXT_COLOR
+                                    // }
+                                    // style={{left: '9%', top: '2%'}}
+                                    color={'#0A90F6'}
+                                  />
+                                  <Text
+                                    style={{
+                                      marginTop: '1.9%',
+                                      marginLeft: '7%',
+                                      // color:
+                                      //   THEME.data === 'light'
+                                      //     ? LIGHT_TEXT_COLOR
+                                      //     : DARK_TEXT_COLOR,
+                                    }}>
+                                    26/08/2024 13:14 IST
+                                  </Text>
+                                </View>
+                                <TouchableOpacity
+                                  style={{
+                                    flexDirection: 'row',
+                                    padding: '2%',
+                                    left: '1%',
+                                    marginLeft: '39%',
+                                    // borderWidth: 1,
+                                    width:
+                                      Dimensions.get('window').width * 0.29,
+                                    borderRadius: 5,
+                                  }}>
+                                  <Iconsss
+                                    name="more-horizontal"
+                                    size={24}
+                                    // style={{marginHorizontal: '4%'}}
+                                    color={'#0A90F6'}
+                                    style={{top: '-1%'}}
+                                  />
+                                  <Text>Read more</Text>
+                                </TouchableOpacity>
+                              </View>
+                              {/* ---------------------------- date , whatsapp and share container, end------------------------------------- */}
+                            </View>
+                          </View>
+                        </TouchableWithoutFeedback>
+                      </Animated.View>
+                    )}
+                  </>
+                )}
+
+                {currentIndex > 0 && (
+                  <>
+                    {currentIndex % 4 === 3 ? (
+                      <Animated.View
+                        style={[
+                          styles.cardContainer,
+                          animatedStyle,
+                          {
+                            zIndex: 1,
+                            position: readMoreClick ? 'relative' : 'absolute',
+                          },
+                          {
+                            backgroundColor:
+                              THEME.data == 'light'
+                                ? LIGHT_BG_COLOR
+                                : DARK_BG_COLOR,
+                          },
+                        ]}
+                        {...panResponder.panHandlers}>
+                        <Full_screen_ad
+                        // Attach pan responder handlers here
+                        />
+                      </Animated.View>
+                    ) : (
+                      <Animated.View
+                        style={[
+                          styles.cardContainer,
+                          {
+                            zIndex: 1,
+                            position: 'absolute',
+                            transform: [{translateY: prevSwipeAnimation}],
+                          },
+                          {
+                            backgroundColor:
+                              THEME.data === 'light'
+                                ? LIGHT_BG_COLOR
+                                : DARK_BG_COLOR,
+                          },
+                        ]}>
+                        <TouchableWithoutFeedback>
+                          <View
+                            style={[
+                              styles.card,
+                              {
+                                backgroundColor:
+                                  THEME.data === 'light'
+                                    ? LIGHT_BG_COLOR
+                                    : DARK_BG_COLOR,
+                              },
+                            ]}>
+                            {/* ---------------------white background container---------------------------- */}
+
+                            <View
+                              style={{
+                                backgroundColor: 'white',
+                                width: screenWidth * 0.97, // 90% of the screen width
+                                height: windowHeight * 0.753,
+                                alignSelf: 'center',
+                                top: '3.4%',
+                                position: 'absolute',
+                              }}>
+                              {/* ------------------------------title----------------------------------------------- */}
+
+                              <View
+                                style={{
+                                  flexDirection: 'row',
+                                  alignItems: 'center',
+                                  justifyContent: 'space-between',
+                                }}>
+                                <Text
+                                  style={[
+                                    styles.title,
+                                    {
+                                      color:
+                                        THEME.data === 'light'
+                                          ? 'red'
+                                          : DARK_TEXT_COLOR,
+                                    },
+                                  ]}
+                                  numberOfLines={2} // Limit title to a maximum of 2 lines
+                                  ellipsizeMode="tail" // Hide overflow with ellipsis
+                                >
+                                  {selectedLanguage === 'letest_news'
+                                    ? stripHtmlTags(
+                                        items[currentIndex - 1].title,
+                                      )
+                                    : stripHtmlTags(
+                                        items[currentIndex - 1].title,
+                                      )}
+                                </Text>
+
+                                <TouchableOpacity
+                                  style={{
+                                    position: 'absolute',
+                                    right: '2%',
+                                    top: '5%',
+                                  }}>
+                                  <Iconssssss
+                                    name="share"
+                                    size={25}
+                                    color="#20a7db"
+                                    style={{marginLeft: 10}}
+                                  />
+                                </TouchableOpacity>
+                              </View>
+
+                              {/* ---------------------------Image---------------------------------------------------- */}
+
+                              <View
+                                style={{
+                                  position: 'absolute',
+                                  top: '17%',
+                                  left: '3%',
+                                }}>
+                                <Image
+                                  source={{uri: image_url}}
+                                  style={styles.image}
+                                />
+                              </View>
+
+                              {/* ------------------------------short description---------------------------------------------- */}
+
+                              <View style={{position: 'absolute', top: '55%'}}>
+                                <Text
+                                  style={[
+                                    styles.description,
+                                    {
+                                      color:
+                                        THEME.data === 'light'
+                                          ? LIGHT_TEXT_COLOR
+                                          : DARK_TEXT_COLOR,
+                                    },
+                                  ]}
+                                  numberOfLines={4}
+                                  ellipsizeMode="tail">
+                                  {items[currentIndex - 1].body}
+                                </Text>
+                              </View>
+
+                              {/* ---------- date , whatsapp and share container -------------------- */}
+
+                              <View
+                                style={{
+                                  flexDirection: 'row',
+                                  justifyContent: 'space-around',
+                                  position: 'absolute',
+                                  bottom: '0%',
+                                }}>
+                                <View
+                                  style={{
+                                    flexDirection: 'row',
+                                    marginTop: '1%',
+                                    left: '5%',
+                                  }}>
+                                  <Iconss
+                                    name="access-time"
+                                    size={25}
+                                    // color={
+                                    //   THEME.data === 'light'
+                                    //     ? LIGHT_TEXT_COLOR
+                                    //     : DARK_TEXT_COLOR
+                                    // }
+                                    // style={{left: '9%', top: '2%'}}
+                                    color={'#0A90F6'}
+                                  />
+                                  <Text
+                                    style={{
+                                      marginTop: '1.9%',
+                                      marginLeft: '7%',
+                                      // color:
+                                      //   THEME.data === 'light'
+                                      //     ? LIGHT_TEXT_COLOR
+                                      //     : DARK_TEXT_COLOR,
+                                    }}>
+                                    26/08/2024 13:14 IST
+                                  </Text>
+                                </View>
+                                <TouchableOpacity
+                                  style={{
+                                    flexDirection: 'row',
+                                    padding: '2%',
+                                    left: '1%',
+                                    marginLeft: '39%',
+                                    // marginBottom:'-10%',
+                                    // top:'20%',
+                                    // borderWidth: 1,
+                                    width:
+                                      Dimensions.get('window').width * 0.29,
+                                    borderRadius: 5,
+                                  }}>
+                                  <Iconsss
+                                    name="more-horizontal"
+                                    size={24}
+                                    // style={{marginHorizontal: '4%'}}
+                                    color={'#0A90F6'}
+                                    style={{top: '-1%'}}
+                                  />
+                                  <Text>Read more</Text>
+                                </TouchableOpacity>
+                              </View>
+                              {/* ---------------------------- date , whatsapp and share container, end------------------------------------- */}
+                            </View>
+                          </View>
+                        </TouchableWithoutFeedback>
+                      </Animated.View>
+                    )}
+                  </>
+                )}
+              </View>
             </View>
+          )}
+          {currentIndex % 4 === 3 ? null : (
+            <View
+              style={[styles.overlay,]}>
+              <Header
+                onSelectedLanguage={handleLanguageChange}
+                onHandleDrawer_navigation={handleContentPress}
+                selectedLanguage={selectedLanguage}
+                drawer_navigation={drawer_navigation}
+                footerClickedData={footerClickedData}
+              />
+            </View>
+          )}
+
+          {currentIndex % 4 === 3 ? null : (
+            <View style={styles.overlayFooter}>
+              <Footer
+                handleModalVisible={handleModalVisible}
+                OnHandleFooterClick={handleFooterClicked}
+              />
+            </View>
+          )}
+
+          <View style={styles.More_model}>
+            {isMoreModalVisible && (
+              <More_model onHandleCancelModel={handleCancelModel} />
+            )}
+          </View>
+        </View>
+        {/* ---------------------------sticky ad ---------------------------------------------------- */}
+        {currentIndex % 4 === 3 ? null : (
+          <View
+            style={{
+              backgroundColor: 'white',
+              width: '100%',
+              height: '8%',
+              zIndex: 5,
+              position: 'absolute',
+              bottom: '8%',
+            }}>
+            <Image
+              source={require('../Assets/ad.jpg')}
+              style={[
+                styles.stickyAd,
+                {
+                  height: windowHeight * 0.07,
+                  width: screenWidth * 0.8,
+                },
+              ]}
+            />
           </View>
         )}
-        {/* {showHeaderFooter && ( */}
-
-        <View style={styles.overlay}>
-          <Header
-            onSelectedLanguage={handleLanguageChange}
-            onHandleDrawer_navigation={handleContentPress}
-            selectedLanguage={selectedLanguage}
-          />
-        </View>
-        {/* )} */}
-        {/* {showHeaderFooter && ( */}
-        <View style={styles.overlayFooter}>
-          <Footer handleModalVisible={handleModalVisible} />
-        </View>
-        {/* )} */}
-
-        <View style={styles.More_model}>
-          {isMoreModalVisible && (
-            <More_model onHandleCancelModel={handleCancelModel} />
-          )}
-        </View>
-        <View style={{zIndex: 5, left: '3%'}}>
-          <Image source={require('../Assets/ad.jpg')} style={styles.stickyAd} />
-        </View>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -778,16 +1029,19 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width * 0.9,
     height: Dimensions.get('window').height * 0.25,
     borderRadius: 10,
-    top: '-25%',
-    left: '3.5%',
+    // top: '-25%',
+    // left: '3.5%',
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginHorizontal: '10%',
+    margin: '10%',
     width: screenWidth * 0.72,
     color: 'black',
-    // Remove left and top properties
+    left: '-4%',
+    top: '-8%',
+    // backgroundColor: 'red',
+    // marginVertical: 10,
   },
   description: {
     fontSize: 18,
@@ -844,13 +1098,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'transparent',
   },
-  overlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 100,
-  },
+  // overlay: {
+  //   position: 'absolute',
+  //   top: 0,
+  //   left: 0,
+  //   right: 0,
+  //   zIndex: 10,
+  //   height: 60, // Fixed height to prevent shifts
+  // },
   overlayFooter: {
     position: 'absolute',
     // top: '92%',
@@ -870,8 +1125,15 @@ const styles = StyleSheet.create({
   },
   stickyAd: {
     // top: -270,
-    top: -(SCREEN_HEIGHT * 0.34),
-    width: '94.5%',
+    position: 'absolute',
+    top: '5.5%',
+    left: '9%',
+    // width: '88.89%',
+    // height:'7.81%'
+    //   width: 320,
+    // height:50
+    // height:screenWidth*0.1,
+    // width:
   },
 });
 
