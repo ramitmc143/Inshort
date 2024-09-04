@@ -1,20 +1,24 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet,Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'; // Import your icon set
+
+const screenWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 const Drawer_navigation = ({ onHandleClick }) => {
   // Define the data for the buttons including icon names
   const data = [
-    { id: 1, label: 'Home', icon: 'home' },
+    { id: 1, label: 'Letest news', icon: 'new-releases' },
     { id: 2, label: 'Profile', icon: 'person' },
     { id: 3, label: 'Settings', icon: 'settings' },
     { id: 4, label: 'Notifications', icon: 'notifications' },
     { id: 5, label: 'Messages', icon: 'message' },
     { id: 6, label: 'Favorites', icon: 'star' },
-    { id: 7, label: 'Friends', icon: 'group' },
-    { id: 8, label: 'Search', icon: 'search' },
-    { id: 9, label: 'Help', icon: 'help' },
-    { id: 10, label: 'Logout', icon: 'logout' },
+    { id: 7, label: 'Friends', icon: 'group' ,},
+    { id: 8, label: 'App Info', icon: 'info' ,},
+    { id: 9, label: 'Search', icon: 'search' },
+    { id: 10, label: 'Help', icon: 'help' },
+    { id: 11, label: 'Logout', icon: 'logout' },
   ];
 
   const handleButtonPress = (item) => {
@@ -42,8 +46,8 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
     backgroundColor: '#295F98',
-    width: '66%',
-    height: 540,
+    width: screenWidth*0.5,
+    height:windowHeight*0.774,
     top: 85,
     right: '-35%',
   },
@@ -52,10 +56,10 @@ const styles = StyleSheet.create({
     alignItems: 'center', // Align items vertically center
     padding: '5%',
     borderRadius: 5,
-    marginBottom: '5%',
+    marginBottom: '4.8%',
     borderColor: 'lightgray',
-    width: '115%',
-    left: '-2.5%',
+    // width: '113%',
+    left: '-2%',
     borderBottomWidth: 1, // Add border width here
     borderColor:'#000000'
 

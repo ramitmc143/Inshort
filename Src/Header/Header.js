@@ -1,4 +1,4 @@
-import React, {useCallback, useState, useRef} from 'react';
+import React, {useCallback, useState, useRef ,useEffect } from 'react';
 import {
   View,
   Text,
@@ -30,6 +30,8 @@ const Header = ({
   onSelectedLanguage,
   selectedLanguage,
   onHandleDrawer_navigation,
+  drawer_navigation,
+  footerClickedData
 }) => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [drawerVisible, setDrawerVisible] = useState(false);
@@ -65,15 +67,16 @@ const Header = ({
         easing: Easing.inOut(Easing.ease),
         useNativeDriver: true,
       }).start(() => setDrawerVisible(false));
-    } else {
-      // Opening drawer
-      setDrawerVisible(true);
-      Animated.timing(drawerAnimation, {
-        toValue: 0, // Animate drawer in
-        duration: 300,
-        easing: Easing.inOut(Easing.ease),
-        useNativeDriver: true,
-      }).start();
+    }  else {
+       // Opening drawer
+       setDrawerVisible(true);
+       // setDrawerVisible(true);
+       Animated.timing(drawerAnimation, {
+         toValue: 0, // Animate drawer in
+         duration: 300,
+         easing: Easing.inOut(Easing.ease),
+         useNativeDriver: true,
+       }).start();
     }
     onHandleDrawer_navigation();
   };
@@ -87,7 +90,7 @@ const Header = ({
   const handleOutsidePress = () => {
     if (drawerVisible) {
       toggleDrawer(); // Close the drawer if it's open and the user taps outside
-    }
+    } 
   };
 
   function capitalizeFirstLetter(string) {
@@ -97,6 +100,14 @@ const Header = ({
   const handleDrawerClose = () => {
     setDrawerVisible(false);
   };
+
+  useEffect(() => {
+    if (footerClickedData) {
+      setSelectedValue(footerClickedData);
+    }
+  }, [footerClickedData]);
+
+  console.log('header drawer_navigation-',drawer_navigation)
 
   return (
     <TouchableWithoutFeedback onPress={handleOutsidePress}>
@@ -111,12 +122,12 @@ const Header = ({
                 
            </View>
         <View style={[styles.item , {marginLeft:'-10%'}]}>
-          <TouchableOpacity style={styles.discover}>
+          <View style={styles.discover}>
             <Text
               style={[
                 styles.text,
                 {
-                  width: 100,
+                  width: 110,
                   marginBottom: 5,
                   letterSpacing: 1,
                   alignItems: 'center',
@@ -132,7 +143,7 @@ const Header = ({
                 // : capitalizeFirstLetter(selectedLanguage)
               }
             </Text>
-          </TouchableOpacity>
+          </View>
         </View>
      
         <View
@@ -148,9 +159,9 @@ const Header = ({
             activeText={'TL'}
             inActiveText={'ENG'}
             backgroundActive={'#125B9A'}
-            backgroundInactive={'#125B9A'}
+            backgroundInactive={'gray'}
             circleActiveColor={'#1E2A5E'}
-            circleInActiveColor={'#1E2A5E'}
+            circleInActiveColor={'#000000'}
             innerCircleStyle={{alignItems: 'center', justifyContent: 'center'}}
             outerCircleStyle={{}}
             switchLeftPx={8}
@@ -198,7 +209,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderBottomColor: 'red',
     elevation: 5,
-    height: 54,
+    height:  windowHeight*0.072
+    ,
   },
   item: {
     // flex: 1,
@@ -206,7 +218,7 @@ const styles = StyleSheet.create({
   },
   centerItem: {
     justifyContent: 'center',
-    position: 'relative',
+    // position: 'relative',
   },
   text: {
     marginLeft: 5,
@@ -229,8 +241,8 @@ const styles = StyleSheet.create({
     marginLeft:'20%'
   },
   customSwitch: {
-    width: 80,
-    height: 30,
+    // width: 80,
+    // height: 30,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 15,
@@ -252,7 +264,7 @@ const styles = StyleSheet.create({
     width: '75%',
     height: '0%',
     backgroundColor: '#ffffff',
-    zIndex: 1001,
+    // zIndex: 1001,
     elevation: 10,
   },
 });

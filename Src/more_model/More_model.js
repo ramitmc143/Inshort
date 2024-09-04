@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Modal, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Modal, TouchableWithoutFeedback, Image } from 'react-native';
 import Iconss from 'react-native-vector-icons/Entypo';
 import Preferences from '../preferences/Preferences';
 import { useSelector } from 'react-redux';
@@ -18,7 +18,7 @@ const More_model = ({ onHandleCancelModel, visible }) => {
   };
 
   const handlePreferencesPress = () => {
-    setPreferencesVisible(true);
+    // setPreferencesVisible(true);
   };
 
   const handleClosePreferences = () => {
@@ -43,31 +43,37 @@ const More_model = ({ onHandleCancelModel, visible }) => {
           <View style={styles.container}>
             <TouchableWithoutFeedback>
               <View style={[styles.content, {backgroundColor:THEME.data == 'light' ? LIGHT_BG_COLOR : DARK_BG_COLOR},{borderTopColor:THEME.data == 'light' ? DARK_TEXT_COLOR  : LIGHT_TEXT_COLOR}]}>
-                <Text style={[styles.title , {color:THEME.data == 'light' ? '#0A90F6':DARK_TEXT_COLOR}]}>More Options</Text>
+                <Text style={[styles.title , {color:THEME.data == 'light' ? 'white':DARK_TEXT_COLOR}]}>More Options</Text>
                 <View style={styles.optionRow}>
-                  <TouchableOpacity style={[styles.optionButton ,optionButton_backgroundColor ]} onPress={handlePreferencesPress}>
-                    <Text style={[styles.optionText,{color:text_color}]}>Preferences</Text>
+                  <TouchableOpacity style={[styles.optionButton ,optionButton_backgroundColor  ]} onPress={handlePreferencesPress}>
+                    <Image source={require('../Assets/upsc_logo.jpg')} style={{width:'30%',height:'50%',margin:'3%'}} />
+                    <Text style={[styles.optionText,{color:text_color}]}>UPSC</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={[styles.optionButton ,optionButton_backgroundColor ]} onPress={() => {}}>
-                    <Text style={[styles.optionText , {color:text_color} ]}>App Info</Text>
+                  <Image source={require('../Assets/appsc_logo.png')} style={{width:'30%',height:'50%',margin:'3%'}} />
+                    <Text style={[styles.optionText , {color:text_color} ]}>APPSC</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={[styles.optionButton ,optionButton_backgroundColor ]} onPress={() => {}}>
-                    <Text style={[styles.optionText , {color:text_color}]}>Share App</Text>
+                  <Image source={require('../Assets/tspsc-logo.png')} style={{width:'30%',height:'50%',margin:'3%'}} />
+                    <Text style={[styles.optionText , {color:text_color}]}>TSPSC</Text>
                   </TouchableOpacity>
                 </View>
                 <View style={styles.optionRow}>
                   <TouchableOpacity style={[styles.optionButton ,optionButton_backgroundColor ]} onPress={() => {}}>
-                    <Text style={[styles.optionText , {color:text_color}]}>Privacy Policy</Text>
+                  <Image source={require('../Assets/ssc-logo.jpg')} style={{width:'30%',height:'50%',margin:'3%'}} />
+                    <Text style={[styles.optionText , {color:text_color}]}>SSC</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={[styles.optionButton ,optionButton_backgroundColor ]} onPress={() => {}}>
-                    <Text style={[styles.optionText , {color:text_color}]}>Terms & Conditions</Text>
+                  <Image source={require('../Assets/jee-logo.jpg')} style={{width:'30%',height:'50%',margin:'3%'}} />
+                    <Text style={[styles.optionText , {color:text_color}]}>JEE</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={[styles.optionButton ,optionButton_backgroundColor ]} onPress={() => {}}>
-                    <Text style={[styles.optionText , {color:text_color}]}>Feedback</Text>
+                  <Image source={require('../Assets/rrb-logo.png')} style={{width:'30%',height:'55%',margin:'3%'}} />
+                    <Text style={[styles.optionText , {color:text_color}]}>RRB</Text>
                   </TouchableOpacity>
                 </View>
               <TouchableOpacity style={styles.closeButton} onPress={handleCancelModel}>
-                  <Iconss name="cross" size={30} color={Icons_color} />
+                  <Iconss name="cross" size={30} color={'white'} />
                 </TouchableOpacity>
               </View>
             </TouchableWithoutFeedback>

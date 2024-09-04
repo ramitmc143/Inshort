@@ -24,7 +24,7 @@ import {
   current_affairs_in_english,
 } from '../redux/utils/Strings';
 
-const Footer = ({handleModalVisible}) => {
+const Footer = ({handleModalVisible ,OnHandleFooterClick}) => {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -43,6 +43,11 @@ const Footer = ({handleModalVisible}) => {
     handleModalVisible(newModalVisible);
   }, [modalVisible, handleModalVisible]);
 
+
+  const handleFooterClick = (clicked) => {
+    OnHandleFooterClick(clicked)
+  }
+
   return (
     <View
       style={[
@@ -51,7 +56,9 @@ const Footer = ({handleModalVisible}) => {
       ]}>
       <TouchableOpacity
         style={styles.iconContainer}
-        onPress={() => navigation.navigate('Notification')}>
+        onPress={() => handleFooterClick('Jobs')
+        //  navigation.navigate('Notification')
+         }>
         <View>
           <Iconss
             name="notifications"
@@ -69,7 +76,9 @@ const Footer = ({handleModalVisible}) => {
       </TouchableOpacity>
 
 
-      <TouchableOpacity style={styles.iconContainer}>
+      <TouchableOpacity style={styles.iconContainer}
+         onPress={() => handleFooterClick('Model paper')}
+      >
         <View>
           <Iconss
             name="newspaper"
@@ -90,7 +99,9 @@ const Footer = ({handleModalVisible}) => {
 
       <TouchableOpacity
         style={styles.iconContainer}
-        onPress={() => navigation.navigate('Education')}>
+        onPress={() => handleFooterClick('Current Affairs')
+        // navigation.navigate('Education')
+        }>
         <View>
           <Iconss
             name="newspaper-outline"
@@ -109,7 +120,9 @@ const Footer = ({handleModalVisible}) => {
 
       <TouchableOpacity
         style={styles.iconContainer}
-        onPress={() => navigation.navigate('Education')}>
+        onPress={() =>  handleFooterClick('News')
+        // navigation.navigate('Education')
+        }>
         <View>
           <Iconssss
             name="book-education"
@@ -134,8 +147,12 @@ const Footer = ({handleModalVisible}) => {
         style={styles.iconContainer}
         // onPress={handleModalToggle}
         onPress={
-          // () => navigation.navigate('More_model')
-          toggleModal
+          () => {
+            // navigation.navigate('More_model')
+          toggleModal()
+          // handleFooterClick('More')
+          }
+          
         }>
         <View>
           <Iconsss
